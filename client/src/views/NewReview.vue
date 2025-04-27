@@ -32,63 +32,56 @@
       <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
     </div>
   </template>
- <script>
- import axios from 'axios';
- import breakingbad from '../assets/breakingbad.jpg'
- import inception from '../assets/inception.jpg'
- import darkknight from '../assets/darkknight.jpg'
- 
- export default {
-   name: "NewReview",
-   props: ['id'],
-   data() {
-     return {
-       title: "",
-       content: "",
-       rating: 0,
-       films: [
-         { id: 1, title: 'Breaking Bad', image: breakingbad },
-         { id: 2, title: 'Inception', image: inception },
-         { id: 3, title: 'The Dark Knight', image: darkknight }
-       ]
-     };
-   },
-   computed: {
-     filmTitle() {
-       const film = this.films.find(f => f.id === parseInt(this.id));
-       return film ? film.title : "Film inconnu";
-     }
-   },
-   methods: {
-     async submitReview() {
-       try {
-         const response = await axios.post('http://localhost:5050/api/reviews', {
-           work_id: this.id,
-           user_id: 1, // 👈 TEMPORAIRE car pas encore de vraie connexion utilisateur
-           title: this.title,
-           content: this.content,
-           rating: this.rating
-         });
- 
-         console.log(response.data);
-         alert('✅ Critique ajoutée avec succès pour ' + this.filmTitle);
- 
-         // Nettoyer le formulaire
-         this.title = "";
-         this.content = "";
-         this.rating = 0;
- 
-         // Retourner vers la liste des films
-         this.$router.push('/works');
- 
-       } catch (error) {
-         console.error(error);
-         alert('❌ Erreur lors de l’ajout de la critique');
-       }
-     }
-   }
- }
- </script>
+  
+  <script>
+  import axios from 'axios'
+  import breakingbad from '../assets/breakingbad.jpg'
+  import inception from '../assets/inception.jpg'
+  import darkknight from '../assets/darkknight.jpg'
+  
+  export default {
+    name: "NewReview",
+    props: ['id'],
+    data() {
+      return {
+        title: "",
+        content: "",
+        rating: 0,
+        films: [
+          { id: 1, title: 'Breaking Bad', image: breakingbad },
+          { id: 2, title: 'Inception', image: inception },
+          { id: 3, title: 'The Dark Knight', image: darkknight }
+        ]
+      }
+    },
+    computed: {
+      filmTitle() {
+        const film = this.films.find(f => f.id === parseInt(this.id));
+        return film ? film.title : "Film inconnu";
+      }
+    },
+    methods: {
+      async submitReview() {
+        try {
+          await axios.post('http://localhost:5050/api/reviews', {
+            work_id: parseInt(this.id),
+            user_id: 1, // ➡️ temporaire (on met 1 en attendant gestion du login)
+            title: this.title,
+            content: this.content,
+            rating: this.rating
+          });
+  
+          alert(`✅ Critique ajoutée pour ${this.filmTitle} !`);
+          this.$router.push(`/work/${this.id}`); // Rediriger vers la fiche du film après
+        } catch (error) {
+          console.error('Erreur lors de l’envoi de la critique :', error);
+          alert('❌ Erreur lors de l’ajout.');
+        }
+      }
+    }
+  }
+  </script>
+  
   
   <style scoped>
   .new-review {
