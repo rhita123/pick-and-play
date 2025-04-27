@@ -1,18 +1,16 @@
-// src/main.js
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import axios from 'axios'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import axios from 'axios';
 
-Vue.config.productionTip = false
+// Création de l'app
+const app = createApp(App);
 
-// 🔥 Configurer Axios
-axios.defaults.baseURL = 'http://localhost:5050/api'
+// On ajoute axios en global
+app.config.globalProperties.$http = axios;
 
-// 🔥 Ajouter axios globalement
-Vue.prototype.$http = axios
+// On utilise le router
+app.use(router);
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+// Et on monte l'app
+app.mount('#app');

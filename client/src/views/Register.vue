@@ -1,14 +1,27 @@
 <template>
     <div class="register">
-      <h1>Créer un Compte</h1>
+      <h1>Créer un compte</h1>
+  
       <form @submit.prevent="register">
-        <input v-model="username" type="text" placeholder="Nom d'utilisateur" required />
-        <input v-model="email" type="email" placeholder="Email" required />
-        <input v-model="password" type="password" placeholder="Mot de passe" required />
+        <div class="form-group">
+          <label for="username">Nom d'utilisateur :</label>
+          <input type="text" id="username" v-model="username" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email :</label>
+          <input type="email" id="email" v-model="email" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="password">Mot de passe :</label>
+          <input type="password" id="password" v-model="password" required />
+        </div>
+  
         <button type="submit">S'inscrire</button>
       </form>
-      <p v-if="message" class="success">{{ message }}</p>
-      <p v-if="error" class="error">{{ error }}</p>
+  
+      <router-link to="/login" class="back-button">← Déjà inscrit ? Connectez-vous</router-link>
     </div>
   </template>
   
@@ -19,32 +32,29 @@
       return {
         username: '',
         email: '',
-        password: '',
-        message: '',
-        error: ''
-      }
+        password: ''
+      };
     },
     methods: {
       async register() {
         try {
-          const response = await this.$http.post('/register', {
+          const response = await this.$http.post('http://localhost:5050/api/register', {
             username: this.username,
             email: this.email,
             password: this.password
           });
-          this.message = response.data.message;
-          this.error = '';
-          // Après inscription réussie, on peut rediriger vers connexion
+          alert(response.data.message);
           this.$router.push('/login');
-        } catch (err) {
-          console.error(err);
-          this.error = err.response?.data?.error || 'Erreur lors de l’inscription';
-          this.message = '';
+        } catch (error) {
+          alert('Erreur lors de l\'inscription ❌');
+          console.error(error);
         }
       }
     }
   }
   </script>
+  
+  
   
   <style scoped>
   .register {
