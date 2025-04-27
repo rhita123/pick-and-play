@@ -1,6 +1,6 @@
 <template>
     <div class="new-review">
-      <h1>Ajouter une Critique</h1>
+      <h1>Ajouter une Critique pour {{ filmTitle }}</h1>
   
       <form @submit.prevent="submitReview">
         <div class="form-group">
@@ -34,24 +34,40 @@
   </template>
   
   <script>
+  import breakingbad from '../assets/breakingbad.jpg'
+  import inception from '../assets/inception.jpg'
+  import darkknight from '../assets/darkknight.jpg'
+  
   export default {
     name: "NewReview",
+    props: ['id'], // On reçoit l'id du film
     data() {
       return {
         title: "",
         content: "",
         rating: 0,
+        films: [
+          { id: 1, title: 'Breaking Bad', image: breakingbad },
+          { id: 2, title: 'Inception', image: inception },
+          { id: 3, title: 'The Dark Knight', image: darkknight }
+        ]
       };
+    },
+    computed: {
+      filmTitle() {
+        const film = this.films.find(f => f.id === parseInt(this.id));
+        return film ? film.title : "Film inconnu";
+      }
     },
     methods: {
       submitReview() {
-        console.log("Nouvelle critique :", {
+        console.log("Nouvelle critique pour", this.filmTitle, ":", {
           title: this.title,
           content: this.content,
           rating: this.rating
         });
   
-        alert('Critique envoyée avec succès ! ✅');
+        alert(`Critique envoyée pour ${this.filmTitle} ! ✅`);
   
         // Remettre le formulaire vide
         this.title = "";
@@ -61,6 +77,8 @@
     }
   }
   </script>
+  
+  
   
   <style scoped>
   .new-review {

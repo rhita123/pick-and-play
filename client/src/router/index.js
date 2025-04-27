@@ -11,7 +11,7 @@ const routes = [
   { path: '/login', name: 'Login', component: Login },
   { path: '/register', name: 'Register', component: Register },
   { path: '/works', name: 'WorkList', component: WorkList },
-  { path: '/new-review', name: 'NewReview', component: NewReview },
+  { path: '/new-review/:id', name: 'NewReview', component: NewReview, props: true },
   { path: '/work/:id', name: 'WorkDetails', component: WorkDetails, props: true },
 ];
 

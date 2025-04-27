@@ -8,8 +8,8 @@
       <p>{{ work.description }}</p>
   
       <!-- Nouveau bouton Ajouter une Critique -->
-      <router-link to="/new-review" class="add-review-button">
-        + Ajouter une Critique
+      <router-link :to="`/new-review/${work.id}`" class="add-review-button">
+            + Ajouter une Critique
       </router-link>
   
       <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
