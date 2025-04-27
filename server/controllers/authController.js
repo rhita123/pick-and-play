@@ -52,10 +52,15 @@ exports.login = (req, res) => {
   });
 };
 
-// ➡️ Récupérer tous les utilisateurs (admin uniquement)
+// Vérification pour que seul l'admin puisse accéder aux utilisateurs
 exports.getAllUsers = (req, res) => {
-  const sql = 'SELECT id, username, email, role FROM users';
+  const user = req.user; // L'utilisateur connecté, supposé être mis en place par un middleware d'authentification
 
+  if (user.role !== 'admin') {
+    return res.status(403).json({ error: 'Accès interdit. Vous devez être un administrateur.' });
+  }
+
+  const sql = 'SELECT * FROM users';
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Erreur lors de la récupération des utilisateurs :', err);

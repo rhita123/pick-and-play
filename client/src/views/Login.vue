@@ -2,53 +2,62 @@
     <div class="login">
       <h1>Connexion</h1>
       <form @submit.prevent="login">
-        <input type="email" v-model="email" placeholder="Email" required />
-        <input type="password" v-model="password" placeholder="Mot de passe" required />
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" v-model="email" required />
+        </div>
+        <div>
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" v-model="password" required />
+        </div>
         <button type="submit">Se connecter</button>
       </form>
     </div>
   </template>
   
   <script>
-  import axios from 'axios'
+  import axios from 'axios';
+  import { useRouter } from 'vue-router';
   
   export default {
     name: 'Login',
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
       };
     },
     methods: {
-  async login() {
-    try {
-      const response = await axios.post('http://localhost:5050/api/login', {
-        email: this.email,
-        password: this.password
-      });
-
-      const user = response.data.user;
-
-      // ➡️ Stocker l'utilisateur dans localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-
-      // ➡️ Redirection selon le rôle
-      if (user.role === 'admin') {
-        this.$router.push('/admin'); // si admin
-      } else {
-        this.$router.push('/works'); // si user
+      async login() {
+        try {
+          const response = await axios.post('http://localhost:5050/api/login', {
+            email: this.email,
+            password: this.password,
+          });
+  
+          // Enregistrement des données de l'utilisateur dans localStorage
+          localStorage.setItem('user', JSON.stringify({
+            id: response.data.user.id,
+            username: response.data.user.username,
+            email: response.data.user.email,
+            role: response.data.user.role  // Stockage du rôle ici
+          }));
+  
+          // Redirection en fonction du rôle
+          if (response.data.user.role === 'admin') {
+            this.$router.push({ name: 'Admin' });  // Redirection vers la page Admin
+          } else {
+            this.$router.push({ name: 'Home' });  // Redirection vers la page d'accueil pour l'utilisateur
+          }
+        } catch (error) {
+          console.error('Erreur lors de la connexion:', error);
+          alert('❌ Échec de la connexion');
+        }
       }
-
-      alert('✅ Connexion réussie');
-      
-    } catch (error) {
-      alert('❌ Email ou mot de passe incorrect');
     }
-  }
-}
-  }
+  };
   </script>
+  
   
   <style scoped>
   .login {
