@@ -9,4 +9,6 @@ router.post('/register', authController.register);
 // ➡️ Route pour connexion
 router.post('/login', authController.login);
 
+router.get('/users', authController.getAllUsers);
+
 module.exports = router;

@@ -41,3 +41,16 @@ exports.login = (req, res) => {
     }
   });
 };
+
+// ➡️ Récupérer tous les utilisateurs (admin uniquement)
+exports.getAllUsers = (req, res) => {
+  const sql = 'SELECT id, username, email, role FROM users';
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des utilisateurs :', err);
+      return res.status(500).json({ error: 'Erreur serveur.' });
+    }
+    res.status(200).json(results);
+  });
+};
