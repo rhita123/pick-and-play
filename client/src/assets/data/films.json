@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "title": "Inception",
+      "type": "movie",
+      "release_year": 2010,
+      "rating": 4.8,
+      "image": "/assets/inception.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Breaking Bad",
+      "type": "series",
+      "release_year": 2008,
+      "rating": 4.9,
+      "image": "/assets/breakingbad.jpg"
+    },
+    {
+      "id": 3,
+      "title": "The Dark Knight",
+      "type": "movie",
+      "release_year": 2008,
+      "rating": 4.7,
+      "image": "/assets/darkknight.jpg"
+    }
+  ]
+  
