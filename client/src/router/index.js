@@ -1,52 +1,49 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Accueil from '@/components/accueil.vue';
-import Cocktail from '@/components/cocktail.vue';
-import Restaurant from '@/components/restaurant.vue';
-import Employee from '@/components/employee.vue'; 
-import Ingredient from '@/components/ingredient.vue';
-import AuthModule from '@/components/authmodule.vue'; // Import the authentication module
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '@/views/Home.vue'
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
+import WorkDetails from '@/views/WorkDetails.vue'
+import NewReview from '@/views/NewReview.vue'
+import Admin from '@/views/Admin.vue'
 
-Vue.use(Router);
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/work/:id',
+    name: 'WorkDetails',
+    component: WorkDetails,
+    props: true
+  },
+  {
+    path: '/new-review',
+    name: 'NewReview',
+    component: NewReview
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin
+  }
+]
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Accueil',
-      component: Accueil,
-    },
-    {
-      path: '/cocktail/:action/:id',
-      name: 'Cocktail',
-      component: Cocktail,
-      props: true,
-    },
-    {
-      path: '/restaurant/:action/:id',
-      name: 'Restaurant',
-      component: Restaurant,
-      props: true,
-    },
-    {
-      path: '/employee/:action/:EmployeesID',
-      name: 'Employee',
-      component: Employee,
-      props: true, // Pass route parameters as props
-    },
-    
-    {
-      path: '/ingredient/:action/:id',
-      name: 'Ingredient',
-      component: Ingredient,
-      props: true,
-    },
-    {
-      path: '/auth/:action',
-      name: 'Auth',
-      component: AuthModule,
-      props: true, // Pass route parameters as props to the AuthModule
-    },
-  ],
-});
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+
+export default router
 
