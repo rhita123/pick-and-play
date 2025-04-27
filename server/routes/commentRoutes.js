@@ -8,5 +8,5 @@ router.post('/', commentController.createComment);
 
 // ➡️ Route pour récupérer les commentaires d'une critique spécifique
 router.get('/:review_id', commentController.getCommentsByReviewId);
-
+router.get('/', commentController.getAllComments);
 module.exports = router;
