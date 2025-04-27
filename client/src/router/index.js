@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import Login from '@/views/Login.vue'
-import Register from '@/views/Register.vue'
-import WorkDetails from '@/views/WorkDetails.vue'
-import NewReview from '@/views/NewReview.vue'
-import Admin from '@/views/Admin.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '@/views/Home.vue';
+import Login from '@/views/Login.vue';
+import Register from '@/views/Register.vue';
+import Admin from '@/views/Admin.vue';
+import WorkDetails from '@/views/WorkDetails.vue';
+import NewReview from '@/views/NewReview.vue';
 
 const routes = [
   {
@@ -23,6 +23,11 @@ const routes = [
     component: Register
   },
   {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin
+  },
+  {
     path: '/work/:id',
     name: 'WorkDetails',
     component: WorkDetails,
@@ -32,18 +37,12 @@ const routes = [
     path: '/new-review',
     name: 'NewReview',
     component: NewReview
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: Admin
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
-})
+});
 
-export default router
-
+export default router;

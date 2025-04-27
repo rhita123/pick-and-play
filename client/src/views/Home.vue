@@ -1,46 +1,37 @@
 <template>
     <div class="home">
-      <h1>Bienvenue sur Popcorn & Opinions 🍿</h1>
-      <div class="work-list">
-        <div v-for="work in works" :key="work.id" class="work-card">
-          <img :src="work.image" :alt="work.title" />
-          <h2>{{ work.title }}</h2>
-          <p>{{ work.release_year }} - {{ work.type }}</p>
-          <p>Note: {{ work.rating }} ⭐️</p>
-        </div>
-      </div>
+      <h1>Bienvenue sur <span>Popcorn & Opinions</span> 🍿🎬</h1>
+      <p>Votre plateforme communautaire pour publier, noter et commenter des films et séries.</p>
     </div>
   </template>
   
   <script>
-  import worksData from '@/assets/data/films.json';
-  
   export default {
-    name: 'Home',
-    data() {
-      return {
-        works: worksData
-      };
-    }
-  };
+    name: 'Home'
+  }
   </script>
   
   <style scoped>
   .home {
     text-align: center;
+    padding: 100px 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
   }
-  .work-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+  
+  .home h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
   }
-  .work-card {
-    width: 200px;
+  
+  .home h1 span {
+    color: #ff5733;
   }
-  .work-card img {
-    width: 100%;
-    height: auto;
+  
+  .home p {
+    font-size: 1.2rem;
+    color: #666;
   }
   </style>
   
