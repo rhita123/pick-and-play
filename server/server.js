@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -16,8 +17,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // ⬇️ On utilise les routes
-app.use('/api', authRoutes);
-app.use('/api', reviewRoutes); 
+app.use('/api', authRoutes);         // localhost:5050/api/register, /api/login
+app.use('/api/reviews', reviewRoutes); // localhost:5050/api/reviews/
 
 // Démarrage serveur
 app.listen(PORT, () => {
