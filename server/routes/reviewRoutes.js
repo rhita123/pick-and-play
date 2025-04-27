@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const reviewController = require('../controllers/reviewController');
 
-// ➡️ Route pour ajouter une critique
+// ➡️ Route pour créer une critique
 router.post('/reviews', reviewController.createReview);
 
 // ➡️ Route pour récupérer toutes les critiques

@@ -10,6 +10,7 @@ exports.createReview = (req, res) => {
   }
 
   const sql = 'INSERT INTO reviews (work_id, user_id, title, content, rating) VALUES (?, ?, ?, ?, ?)';
+  
   db.query(sql, [work_id, user_id, title, content, rating], (err, result) => {
     if (err) {
       console.error('Erreur lors de la création de la critique :', err);
@@ -19,9 +20,10 @@ exports.createReview = (req, res) => {
   });
 };
 
-// ➡️ Lister toutes les critiques
+// ➡️ Récupérer toutes les critiques
 exports.getAllReviews = (req, res) => {
   const sql = 'SELECT * FROM reviews';
+  
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Erreur lors de la récupération des critiques :', err);
