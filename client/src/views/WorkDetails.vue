@@ -41,12 +41,12 @@
       <div class="reviews">
         <h2>Critiques</h2>
   
-        <div v-if="filteredReviews.length === 0" class="no-reviews">
+        <div v-if="reviews.length === 0" class="no-reviews">
           Pas encore de critiques pour ce film.
         </div>
   
         <div v-else>
-          <div v-for="(review, index) in filteredReviews" :key="index" class="review-card">
+          <div v-for="(review, index) in reviews" :key="index" class="review-card">
             <h3>{{ review.title }}</h3>
             <p>{{ review.content }}</p>
             <div class="review-rating">
@@ -55,15 +55,14 @@
           </div>
         </div>
       </div>
-  
     </div>
   </template>
   
   <script>
+  import axios from 'axios'
   import breakingbad from '../assets/breakingbad.jpg'
   import inception from '../assets/inception.jpg'
   import darkknight from '../assets/darkknight.jpg'
-  import { reviewStore } from '../reviewStore.js' // <<< On importe le store ici
   
   export default {
     name: 'WorkDetails',
@@ -71,6 +70,7 @@
       return {
         newComment: '',
         comments: [],
+        reviews: [],
         works: [
           {
             id: 1,
@@ -100,10 +100,6 @@
       work() {
         const id = parseInt(this.$route.params.id)
         return this.works.find(w => w.id === id) || {}
-      },
-      filteredReviews() {
-        const id = parseInt(this.$route.params.id)
-        return reviewStore.reviews.filter(review => review.workId === id)
       }
     },
     methods: {
@@ -112,14 +108,23 @@
           this.comments.push(this.newComment.trim())
           this.newComment = ''
         }
+      },
+      async fetchReviews() {
+        try {
+          const response = await axios.get(`http://localhost:5050/api/reviews/${this.work.id}`)
+          this.reviews = response.data
+        } catch (error) {
+          console.error('Erreur lors du chargement des critiques :', error)
+        }
       }
+    },
+    mounted() {
+      this.fetchReviews()
     }
   }
   </script>
   
-  <style scoped>
-  /* Ton CSS reste inchangé car il est déjà parfait */
-  </style>
+  
   
   <style scoped>
   .work-details {
