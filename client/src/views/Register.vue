@@ -1,26 +1,14 @@
 <template>
     <div class="register">
-      <div class="form-container">
-        <h2>Inscription</h2>
-        <form @submit.prevent="handleRegister">
-          <div class="form-group">
-            <label for="username">Nom d'utilisateur</label>
-            <input type="text" id="username" v-model="username" required>
-          </div>
-  
-          <div class="form-group">
-            <label for="email">Adresse Email</label>
-            <input type="email" id="email" v-model="email" required>
-          </div>
-  
-          <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" v-model="password" required>
-          </div>
-  
-          <button type="submit">S'inscrire</button>
-        </form>
-      </div>
+      <h1>Créer un Compte</h1>
+      <form @submit.prevent="register">
+        <input v-model="username" type="text" placeholder="Nom d'utilisateur" required />
+        <input v-model="email" type="email" placeholder="Email" required />
+        <input v-model="password" type="password" placeholder="Mot de passe" required />
+        <button type="submit">S'inscrire</button>
+      </form>
+      <p v-if="message" class="success">{{ message }}</p>
+      <p v-if="error" class="error">{{ error }}</p>
     </div>
   </template>
   
@@ -31,13 +19,28 @@
       return {
         username: '',
         email: '',
-        password: ''
+        password: '',
+        message: '',
+        error: ''
       }
     },
     methods: {
-      handleRegister() {
-        console.log('Tentative d’inscription avec:', this.username, this.email, this.password);
-        // Ici on mettra la vraie logique d'API plus tard.
+      async register() {
+        try {
+          const response = await this.$http.post('/register', {
+            username: this.username,
+            email: this.email,
+            password: this.password
+          });
+          this.message = response.data.message;
+          this.error = '';
+          // Après inscription réussie, on peut rediriger vers connexion
+          this.$router.push('/login');
+        } catch (err) {
+          console.error(err);
+          this.error = err.response?.data?.error || 'Erreur lors de l’inscription';
+          this.message = '';
+        }
       }
     }
   }
@@ -45,59 +48,45 @@
   
   <style scoped>
   .register {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    background-color: #f5f5f5;
-  }
-  
-  .form-container {
-    background: white;
-    padding: 40px;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background: #fff;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     text-align: center;
   }
   
-  .form-container h2 {
-    margin-bottom: 20px;
-    color: #ff5733;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  .form-group label {
+  input {
     display: block;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  .form-group input {
     width: 100%;
+    margin: 10px 0;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
   }
   
   button {
-    width: 100%;
-    padding: 12px;
-    background-color: #ff5733;
+    background-color: #f25c3b;
     color: white;
     border: none;
+    padding: 12px;
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 10px;
   }
   
   button:hover {
-    background-color: #e04a2d;
+    background-color: #e04b2d;
+  }
+  
+  .success {
+    color: green;
+    margin-top: 10px;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 10px;
   }
   </style>
-  
