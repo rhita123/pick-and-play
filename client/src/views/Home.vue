@@ -1,7 +1,17 @@
 <template>
     <div class="home">
-      <h1>Bienvenue sur <span>Popcorn & Opinions</span> 🍿🎬</h1>
-      <p>Votre plateforme communautaire pour publier, noter et commenter des films et séries.</p>
+      <!-- Video Background -->
+      <video autoplay muted loop>
+        <source src="../assets/background.mp4" type="video/mp4" />
+      </video>
+  
+      
+  
+      <!-- Content Section (Text) -->
+      <div class="content">
+        <h1>Bienvenue sur <span>Popcorn & Opinions</span> 🍿🎬</h1>
+        <p>Votre plateforme communautaire pour publier, noter et commenter des films et séries.</p>
+      </div>
     </div>
   </template>
   
@@ -12,25 +22,106 @@
   </script>
   
   <style scoped>
-  .home {
+  /* Video Background */
+  video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  
+  /* Navbar */
+  .navbar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 87, 51, 0.8); /* légère transparence */
+    z-index: 10;
+  }
+  
+  .logo-container img.logo {
+    height: 50px;
+  }
+  
+  .links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .links a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+  
+  .links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Content Section */
+  .content {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    padding: 100px 20px;
-    background-color: #f5f5f5;
-    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* assombrir juste derrière le texte */
+    padding: 30px 20px;
+    border-radius: 10px;
+    color: white;
+    z-index: 5;
+    animation: fadeIn 2s ease-in;
   }
   
-  .home h1 {
-    font-size: 2.5rem;
+  .content h1 {
+    font-size: 3rem;
+    font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
   }
   
-  .home h1 span {
+  .content h1 span {
     color: #ff5733;
   }
   
-  .home p {
-    font-size: 1.2rem;
-    color: #666;
+  .content p {
+    font-size: 1.3rem;
+    color: #ddd;
   }
-</style>
+  
+  /* Fade-in Animation */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  /* Responsive for small screens */
+  @media (max-width: 768px) {
+    .content h1 {
+      font-size: 2rem;
+    }
+    
+    .content p {
+      font-size: 1rem;
+    }
+  
+    .links {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  </style>
+  
