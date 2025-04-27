@@ -9,6 +9,7 @@ const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const commentRoutes = require('./routes/commentRoutes'); 
+const userRoutes = require('./routes/userRoutes');
 
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use('/api', authRoutes);         // localhost:5050/api/register, /api/login
 app.use('/api/reviews', reviewRoutes); // localhost:5050/api/reviews/
 app.use('/api/comments', commentRoutes); // <--- connecter les commentaires
+app.use('/api', userRoutes);
 
 
 // Démarrage serveur

@@ -1,59 +1,54 @@
 <template>
     <div class="register">
-      <h1>Créer un compte</h1>
-  
+      <h1>Inscription</h1>
       <form @submit.prevent="register">
-        <div class="form-group">
-          <label for="username">Nom d'utilisateur :</label>
-          <input type="text" id="username" v-model="username" required />
-        </div>
+        <input type="text" v-model="username" placeholder="Nom d'utilisateur" required />
+        <input type="email" v-model="email" placeholder="Email" required />
+        <input type="password" v-model="password" placeholder="Mot de passe" required />
   
-        <div class="form-group">
-          <label for="email">Email :</label>
-          <input type="email" id="email" v-model="email" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="password">Mot de passe :</label>
-          <input type="password" id="password" v-model="password" required />
-        </div>
+        <!-- Nouveau champ : choisir role -->
+        <select v-model="role" required>
+          <option value="user">Utilisateur</option>
+          <option value="admin">Admin</option>
+        </select>
   
         <button type="submit">S'inscrire</button>
       </form>
-  
-      <router-link to="/login" class="back-button">← Déjà inscrit ? Connectez-vous</router-link>
     </div>
   </template>
   
   <script>
+  import axios from 'axios'
+  
   export default {
     name: 'Register',
     data() {
       return {
         username: '',
         email: '',
-        password: ''
+        password: '',
+        role: 'user' // valeur par défaut
       };
     },
     methods: {
       async register() {
         try {
-          const response = await this.$http.post('http://localhost:5050/api/register', {
+          const response = await axios.post('http://localhost:5050/api/register', {
             username: this.username,
             email: this.email,
-            password: this.password
+            password: this.password,
+            role: this.role
           });
           alert(response.data.message);
           this.$router.push('/login');
         } catch (error) {
-          alert('Erreur lors de l\'inscription ❌');
-          console.error(error);
+          console.error('Erreur inscription :', error);
+          alert('❌ Erreur lors de l’inscription');
         }
       }
     }
   }
   </script>
-  
   
   
   <style scoped>

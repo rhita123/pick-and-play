@@ -1,22 +1,11 @@
 <template>
     <div class="login">
       <h1>Connexion</h1>
-  
       <form @submit.prevent="login">
-        <div class="form-group">
-          <label>Email :</label>
-          <input type="email" v-model="email" required />
-        </div>
-  
-        <div class="form-group">
-          <label>Mot de passe :</label>
-          <input type="password" v-model="password" required />
-        </div>
-  
+        <input type="email" v-model="email" placeholder="Email" required />
+        <input type="password" v-model="password" placeholder="Mot de passe" required />
         <button type="submit">Se connecter</button>
       </form>
-  
-      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     </div>
   </template>
   
@@ -28,30 +17,36 @@
     data() {
       return {
         email: '',
-        password: '',
-        errorMessage: ''
-      }
+        password: ''
+      };
     },
     methods: {
-      async login() {
-        try {
-          const response = await axios.post('http://localhost:5050/api/login', {
-            email: this.email,
-            password: this.password
-          });
-          console.log(response.data);
-  
-          alert('✅ Connexion réussie ! Bienvenue ' + response.data.user.username + ' !');
-          
-          // ➔ Ici plus tard tu pourras rediriger vers une autre page par exemple
-          // this.$router.push('/works');
-  
-        } catch (error) {
-          console.error(error);
-          this.errorMessage = error.response?.data?.error || 'Erreur lors de la connexion';
-        }
+  async login() {
+    try {
+      const response = await axios.post('http://localhost:5050/api/login', {
+        email: this.email,
+        password: this.password
+      });
+
+      const user = response.data.user;
+
+      // ➡️ Stocker l'utilisateur dans localStorage
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // ➡️ Redirection selon le rôle
+      if (user.role === 'admin') {
+        this.$router.push('/admin'); // si admin
+      } else {
+        this.$router.push('/works'); // si user
       }
+
+      alert('✅ Connexion réussie');
+      
+    } catch (error) {
+      alert('❌ Email ou mot de passe incorrect');
     }
+  }
+}
   }
   </script>
   

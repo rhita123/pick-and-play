@@ -7,6 +7,12 @@
         <router-link to="/works">Films & Séries</router-link>
         <router-link to="/login">Connexion</router-link>
         <router-link to="/register">Inscription</router-link>
+        <router-link 
+            v-if="user && user.role === 'admin'" 
+              to="/admin" 
+                class="nav-link">
+            Admin
+        </router-link>
       </div>
     </nav>
     
@@ -17,7 +23,19 @@
 <script>
 export default {
   name: 'App',
-};
+  data() {
+    return {
+      user: null
+    }
+  },
+  mounted() {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
+      console.log(this.user); // pour vérifier ce qui est stocké
+    }
+  }
+}
 </script>
 
 <style scoped>
