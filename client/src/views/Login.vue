@@ -1,37 +1,55 @@
 <template>
     <div class="login">
-      <div class="form-container">
-        <h2>Connexion</h2>
-        <form @submit.prevent="handleLogin">
-          <div class="form-group">
-            <label for="email">Adresse Email</label>
-            <input type="email" id="email" v-model="email" required>
-          </div>
+      <h1>Connexion</h1>
   
-          <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" v-model="password" required>
-          </div>
+      <form @submit.prevent="login">
+        <div class="form-group">
+          <label>Email :</label>
+          <input type="email" v-model="email" required />
+        </div>
   
-          <button type="submit">Se connecter</button>
-        </form>
-      </div>
+        <div class="form-group">
+          <label>Mot de passe :</label>
+          <input type="password" v-model="password" required />
+        </div>
+  
+        <button type="submit">Se connecter</button>
+      </form>
+  
+      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     </div>
   </template>
   
   <script>
+  import axios from 'axios'
+  
   export default {
     name: 'Login',
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        errorMessage: ''
       }
     },
     methods: {
-      handleLogin() {
-        console.log('Tentative de connexion avec:', this.email, this.password);
-        // Ici on mettra la vraie logique après (API).
+      async login() {
+        try {
+          const response = await axios.post('http://localhost:5050/api/login', {
+            email: this.email,
+            password: this.password
+          });
+          console.log(response.data);
+  
+          alert('✅ Connexion réussie ! Bienvenue ' + response.data.user.username + ' !');
+          
+          // ➔ Ici plus tard tu pourras rediriger vers une autre page par exemple
+          // this.$router.push('/works');
+  
+        } catch (error) {
+          console.error(error);
+          this.errorMessage = error.response?.data?.error || 'Erreur lors de la connexion';
+        }
       }
     }
   }
@@ -39,59 +57,57 @@
   
   <style scoped>
   .login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    background-color: #f5f5f5;
-  }
-  
-  .form-container {
-    background: white;
-    padding: 40px;
+    max-width: 400px;
+    margin: 120px auto 40px;
+    padding: 20px;
+    background: #fff;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
   }
   
-  .form-container h2 {
-    margin-bottom: 20px;
-    color: #ff5733;
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #f25c3b;
   }
   
   .form-group {
     margin-bottom: 20px;
-    text-align: left;
   }
   
-  .form-group label {
+  label {
+    font-weight: bold;
     display: block;
     margin-bottom: 5px;
-    color: #333;
   }
   
-  .form-group input {
+  input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
     border-radius: 5px;
+    border: 1px solid #ccc;
   }
   
   button {
     width: 100%;
     padding: 12px;
-    background-color: #ff5733;
+    background-color: #f25c3b;
     color: white;
     border: none;
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 1.2rem;
   }
   
   button:hover {
-    background-color: #e04a2d;
+    background-color: #e04b2d;
+  }
+  
+  .error {
+    margin-top: 20px;
+    color: red;
+    text-align: center;
   }
   </style>
   
