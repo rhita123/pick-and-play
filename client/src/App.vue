@@ -1,38 +1,24 @@
 <template>
   <div id="app">
-    <Header />
     <router-view />
-    <Footer />
   </div>
 </template>
 
 <script>
-import Header from './components/header.vue';
-import Footer from './components/footer.vue';
-
 export default {
-  name: 'App',
-  components: {
-    Header,
-    Footer,
-  },
-};
+  name: 'App'
+}
 </script>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
 }
-
-router-view {
-  flex: 1;
-}
 </style>
-
-
