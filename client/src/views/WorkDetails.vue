@@ -7,6 +7,11 @@
       </div>
       <p>{{ work.description }}</p>
   
+      <!-- Nouveau bouton Ajouter une Critique -->
+      <router-link to="/new-review" class="add-review-button">
+        + Ajouter une Critique
+      </router-link>
+  
       <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
   
       <!-- Section Commentaires -->
@@ -123,11 +128,27 @@
     color: #555;
   }
   
+  /* Nouveau style pour Ajouter une Critique */
+  .add-review-button {
+    display: inline-block;
+    margin: 15px 10px 0;
+    padding: 10px 20px;
+    background-color: #ff5733;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  
+  .add-review-button:hover {
+    background-color: #e04b2d;
+  }
+  
   .back-button {
     display: inline-block;
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 10px 20px;
-    background-color: #f25c3b;
+    background-color: #666;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -135,7 +156,7 @@
   }
   
   .back-button:hover {
-    background-color: #e04b2d;
+    background-color: #444;
   }
   
   /* Comments Section */

@@ -1,28 +1,29 @@
 <template>
   <div id="app">
-    <header class="navbar">
-      <img src="./assets/logo.png" alt="Popcorn & Opinions" class="logo" />
-      <nav class="nav-links">
+    <nav class="navbar">
+      <img src="./assets/logo.png" alt="Popcorn & Opinions Logo" class="logo" />
+      <div class="nav-links">
         <router-link to="/">Accueil</router-link>
         <router-link to="/works">Films & Séries</router-link>
         <router-link to="/login">Connexion</router-link>
         <router-link to="/register">Inscription</router-link>
-      </nav>
-    </header>
-
+      </div>
+    </nav>
+    
     <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
-}
+  name: 'App',
+};
 </script>
+
 <style scoped>
 .navbar {
   background-color: #f25c3b;
-  padding: 10px 30px; /* élargi pour respirer */
+  padding: 10px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,7 +39,7 @@ export default {
 
 .nav-links {
   display: flex;
-  gap: 30px; /* espace plus large entre les liens */
+  gap: 25px;
 }
 
 .nav-links a {
@@ -52,7 +53,8 @@ export default {
   text-decoration: underline;
 }
 
+/* Pour éviter que le contenu soit caché derrière la navbar */
 #app > *:not(.navbar) {
-  margin-top: 90px; /* pour compenser le header plus haut */
+  margin-top: 80px;
 }
 </style>
