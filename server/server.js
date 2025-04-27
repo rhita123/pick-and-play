@@ -1,21 +1,25 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const app = express();
 require('dotenv').config();
+const db = require('./config/db');
+
+// ⬇️ On importe les routes
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 
-// Middleware
+const app = express();
+const PORT = process.env.PORT || 5050;
+
+// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 
-// Routes
+// ⬇️ On utilise les routes
 app.use('/api', authRoutes);
-app.use('/api', reviewRoutes);
+app.use('/api', reviewRoutes); 
 
-// Démarrage du serveur
-const PORT = process.env.PORT || 5050;
+// Démarrage serveur
 app.listen(PORT, () => {
   console.log(`✅ Serveur lancé sur http://localhost:${PORT}`);
 });
