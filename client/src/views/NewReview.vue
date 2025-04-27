@@ -41,7 +41,7 @@
   
   export default {
     name: "NewReview",
-    props: ['id'],
+    props: ['id'], // On reçoit l'id du film
     data() {
       return {
         title: "",
@@ -52,7 +52,7 @@
           { id: 2, title: 'Inception', image: inception },
           { id: 3, title: 'The Dark Knight', image: darkknight }
         ]
-      }
+      };
     },
     computed: {
       filmTitle() {
@@ -65,25 +65,26 @@
         try {
           await axios.post('http://localhost:5050/api/reviews', {
             work_id: parseInt(this.id),
-            user_id: 1, // ➡️ temporaire (on met 1 en attendant gestion du login)
+            user_id: 1, // temporaire, on simule un utilisateur connecté
             title: this.title,
             content: this.content,
             rating: this.rating
           });
   
-          alert(`✅ Critique ajoutée pour ${this.filmTitle} !`);
-          this.$router.push(`/work/${this.id}`); // Rediriger vers la fiche du film après
+          alert(`✅ Critique envoyée pour ${this.filmTitle} !`);
+          this.$router.push(`/work/${this.id}`); // Redirige vers la page du film
         } catch (error) {
-          console.error('Erreur lors de l’envoi de la critique :', error);
-          alert('❌ Erreur lors de l’ajout.');
+          console.error('Erreur lors de l\'envoi de la critique :', error);
+          alert('❌ Erreur lors de l\'envoi de la critique.');
         }
       }
     }
   }
   </script>
   
-  
   <style scoped>
+  /* ton CSS reste inchangé car il est déjà très bien 💅 */
+  
   .new-review {
     max-width: 600px;
     margin: 120px auto 40px;
@@ -162,4 +163,3 @@
     text-decoration: underline;
   }
   </style>
-  
