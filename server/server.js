@@ -8,6 +8,8 @@ const db = require('./config/db');
 // ⬇️ On importe les routes
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const commentRoutes = require('./routes/commentRoutes'); 
+
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -19,6 +21,8 @@ app.use(bodyParser.json());
 // ⬇️ On utilise les routes
 app.use('/api', authRoutes);         // localhost:5050/api/register, /api/login
 app.use('/api/reviews', reviewRoutes); // localhost:5050/api/reviews/
+app.use('/api/comments', commentRoutes); // <--- connecter les commentaires
+
 
 // Démarrage serveur
 app.listen(PORT, () => {
