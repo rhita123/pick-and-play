@@ -32,57 +32,63 @@
       <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
     </div>
   </template>
-  
-  <script>
-  import breakingbad from '../assets/breakingbad.jpg'
-  import inception from '../assets/inception.jpg'
-  import darkknight from '../assets/darkknight.jpg'
-  import { reviewStore } from '../reviewStore.js' // <-- on importe le store partagé
-  
-  export default {
-    name: "NewReview",
-    props: ['id'], // On reçoit l'id du film
-    data() {
-      return {
-        title: "",
-        content: "",
-        rating: 0,
-        films: [
-          { id: 1, title: 'Breaking Bad', image: breakingbad },
-          { id: 2, title: 'Inception', image: inception },
-          { id: 3, title: 'The Dark Knight', image: darkknight }
-        ]
-      };
-    },
-    computed: {
-      filmTitle() {
-        const film = this.films.find(f => f.id === parseInt(this.id));
-        return film ? film.title : "Film inconnu";
-      }
-    },
-    methods: {
-      submitReview() {
-        // Ajouter dynamiquement la nouvelle critique dans le store
-        reviewStore.reviews.push({
-          workId: parseInt(this.id),
-          title: this.title,
-          content: this.content,
-          rating: this.rating
-        });
-  
-        alert(`Critique envoyée pour ${this.filmTitle} ! ✅`);
-  
-        // Réinitialiser le formulaire
-        this.title = "";
-        this.content = "";
-        this.rating = 0;
-  
-        // Rediriger automatiquement vers la fiche du film
-        this.$router.push(`/work/${this.id}`);
-      }
-    }
-  }
-  </script>
+ <script>
+ import axios from 'axios';
+ import breakingbad from '../assets/breakingbad.jpg'
+ import inception from '../assets/inception.jpg'
+ import darkknight from '../assets/darkknight.jpg'
+ 
+ export default {
+   name: "NewReview",
+   props: ['id'],
+   data() {
+     return {
+       title: "",
+       content: "",
+       rating: 0,
+       films: [
+         { id: 1, title: 'Breaking Bad', image: breakingbad },
+         { id: 2, title: 'Inception', image: inception },
+         { id: 3, title: 'The Dark Knight', image: darkknight }
+       ]
+     };
+   },
+   computed: {
+     filmTitle() {
+       const film = this.films.find(f => f.id === parseInt(this.id));
+       return film ? film.title : "Film inconnu";
+     }
+   },
+   methods: {
+     async submitReview() {
+       try {
+         const response = await axios.post('http://localhost:5050/api/reviews', {
+           work_id: this.id,
+           user_id: 1, // 👈 TEMPORAIRE car pas encore de vraie connexion utilisateur
+           title: this.title,
+           content: this.content,
+           rating: this.rating
+         });
+ 
+         console.log(response.data);
+         alert('✅ Critique ajoutée avec succès pour ' + this.filmTitle);
+ 
+         // Nettoyer le formulaire
+         this.title = "";
+         this.content = "";
+         this.rating = 0;
+ 
+         // Retourner vers la liste des films
+         this.$router.push('/works');
+ 
+       } catch (error) {
+         console.error(error);
+         alert('❌ Erreur lors de l’ajout de la critique');
+       }
+     }
+   }
+ }
+ </script>
   
   <style scoped>
   .new-review {
