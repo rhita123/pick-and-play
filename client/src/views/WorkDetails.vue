@@ -23,7 +23,7 @@
         <div v-if="comments.length === 0" class="no-comments">Aucun commentaire pour le moment.</div>
   
         <ul>
-          <li v-for="(comment, index) in comments" :key="index">{{ comment }}</li>
+          <li v-for="(comment, index) in comments" :key="index">{{ comment.content }}</li>
         </ul>
   
         <form @submit.prevent="addComment">
@@ -103,27 +103,48 @@
       }
     },
     methods: {
-      addComment() {
+      async addComment() {
         if (this.newComment.trim() !== '') {
-          this.comments.push(this.newComment.trim())
-          this.newComment = ''
+          try {
+            await axios.post('http://localhost:5050/api/comments', {
+              review_id: this.work.id,
+              user_id: 1, // temp fixe pour tester
+              content: this.newComment.trim()
+            });
+  
+            alert('✅ Commentaire ajouté !');
+            this.newComment = '';
+  
+            this.fetchComments(); // Recharge pour afficher
+          } catch (error) {
+            console.error('Erreur ajout commentaire :', error);
+            alert('❌ Erreur lors de l’ajout du commentaire');
+          }
+        }
+      },
+      async fetchComments() {
+        try {
+          const response = await axios.get(`http://localhost:5050/api/comments/${this.work.id}`);
+          this.comments = response.data;
+        } catch (error) {
+          console.error('Erreur récupération commentaires :', error);
         }
       },
       async fetchReviews() {
         try {
-          const response = await axios.get(`http://localhost:5050/api/reviews/${this.work.id}`)
-          this.reviews = response.data
+          const response = await axios.get(`http://localhost:5050/api/reviews/${this.work.id}`);
+          this.reviews = response.data;
         } catch (error) {
-          console.error('Erreur lors du chargement des critiques :', error)
+          console.error('Erreur lors du chargement des critiques :', error);
         }
       }
     },
     mounted() {
-      this.fetchReviews()
+      this.fetchReviews();
+      this.fetchComments();
     }
   }
   </script>
-  
   
   
   <style scoped>
