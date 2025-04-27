@@ -32,3 +32,19 @@ exports.getAllReviews = (req, res) => {
     res.status(200).json(results);
   });
 };
+
+// ➡️ Récupérer les critiques pour un film précis
+exports.getReviewsByWorkId = (req, res) => {
+    const { work_id } = req.params;
+  
+    const sql = 'SELECT * FROM reviews WHERE work_id = ?';
+  
+    db.query(sql, [work_id], (err, results) => {
+      if (err) {
+        console.error('Erreur lors de la récupération des critiques par work_id :', err);
+        return res.status(500).json({ error: 'Erreur serveur.' });
+      }
+      res.status(200).json(results);
+    });
+  };
+  
