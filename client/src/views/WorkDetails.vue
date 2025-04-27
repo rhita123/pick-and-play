@@ -2,14 +2,16 @@
     <div class="work-details">
       <img :src="work.image" :alt="work.title" class="poster" />
       <h1>{{ work.title }}</h1>
+  
       <div class="rating">
         <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= work.rating }">★</span>
       </div>
+  
       <p>{{ work.description }}</p>
   
-      <!-- Nouveau bouton Ajouter une Critique -->
+      <!-- Bouton Ajouter une Critique -->
       <router-link :to="`/new-review/${work.id}`" class="add-review-button">
-            + Ajouter une Critique
+        + Ajouter une Critique
       </router-link>
   
       <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
@@ -34,6 +36,26 @@
           <button type="submit">Ajouter</button>
         </form>
       </div>
+  
+      <!-- Section Critiques -->
+      <div class="reviews">
+        <h2>Critiques</h2>
+  
+        <div v-if="filteredReviews.length === 0" class="no-reviews">
+          Pas encore de critiques pour ce film.
+        </div>
+  
+        <div v-else>
+          <div v-for="(review, index) in filteredReviews" :key="index" class="review-card">
+            <h3>{{ review.title }}</h3>
+            <p>{{ review.content }}</p>
+            <div class="review-rating">
+              <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= review.rating }">★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
     </div>
   </template>
   
@@ -48,6 +70,20 @@
       return {
         newComment: '',
         comments: [],
+        reviews: [
+          {
+            workId: 1,
+            title: "Incroyable série !",
+            content: "Walter White est incroyable, chef-d'œuvre total !",
+            rating: 5
+          },
+          {
+            workId: 2,
+            title: "Trop compliqué",
+            content: "Inception m'a retourné le cerveau 🤯",
+            rating: 4
+          }
+        ],
         works: [
           {
             id: 1,
@@ -77,6 +113,10 @@
       work() {
         const id = parseInt(this.$route.params.id)
         return this.works.find(w => w.id === id) || {}
+      },
+      filteredReviews() {
+        const id = parseInt(this.$route.params.id)
+        return this.reviews.filter(review => review.workId === id)
       }
     },
     methods: {
@@ -128,7 +168,6 @@
     color: #555;
   }
   
-  /* Nouveau style pour Ajouter une Critique */
   .add-review-button {
     display: inline-block;
     margin: 15px 10px 0;
@@ -216,6 +255,45 @@
   
   form button:hover {
     background-color: #e04b2d;
+  }
+  
+  /* Reviews Section */
+  .reviews {
+    margin-top: 50px;
+    text-align: center;
+  }
+  
+  .review-card {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    text-align: left;
+  }
+  
+  .review-card h3 {
+    margin-bottom: 10px;
+    color: #f25c3b;
+  }
+  
+  .review-card p {
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .review-rating {
+    margin-top: 10px;
+  }
+  
+  .review-rating .star {
+    color: #ccc;
+    font-size: 1.5rem;
+  }
+  
+  .review-rating .star.filled {
+    color: gold;
   }
   </style>
   
