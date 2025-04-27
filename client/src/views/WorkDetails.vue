@@ -63,6 +63,7 @@
   import breakingbad from '../assets/breakingbad.jpg'
   import inception from '../assets/inception.jpg'
   import darkknight from '../assets/darkknight.jpg'
+  import { reviewStore } from '../reviewStore.js' // <<< On importe le store ici
   
   export default {
     name: 'WorkDetails',
@@ -70,20 +71,6 @@
       return {
         newComment: '',
         comments: [],
-        reviews: [
-          {
-            workId: 1,
-            title: "Incroyable série !",
-            content: "Walter White est incroyable, chef-d'œuvre total !",
-            rating: 5
-          },
-          {
-            workId: 2,
-            title: "Trop compliqué",
-            content: "Inception m'a retourné le cerveau 🤯",
-            rating: 4
-          }
-        ],
         works: [
           {
             id: 1,
@@ -116,7 +103,7 @@
       },
       filteredReviews() {
         const id = parseInt(this.$route.params.id)
-        return this.reviews.filter(review => review.workId === id)
+        return reviewStore.reviews.filter(review => review.workId === id)
       }
     },
     methods: {
@@ -129,6 +116,10 @@
     }
   }
   </script>
+  
+  <style scoped>
+  /* Ton CSS reste inchangé car il est déjà parfait */
+  </style>
   
   <style scoped>
   .work-details {

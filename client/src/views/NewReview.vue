@@ -37,6 +37,7 @@
   import breakingbad from '../assets/breakingbad.jpg'
   import inception from '../assets/inception.jpg'
   import darkknight from '../assets/darkknight.jpg'
+  import { reviewStore } from '../reviewStore.js' // <-- on importe le store partagé
   
   export default {
     name: "NewReview",
@@ -61,7 +62,9 @@
     },
     methods: {
       submitReview() {
-        console.log("Nouvelle critique pour", this.filmTitle, ":", {
+        // Ajouter dynamiquement la nouvelle critique dans le store
+        reviewStore.reviews.push({
+          workId: parseInt(this.id),
           title: this.title,
           content: this.content,
           rating: this.rating
@@ -69,16 +72,17 @@
   
         alert(`Critique envoyée pour ${this.filmTitle} ! ✅`);
   
-        // Remettre le formulaire vide
+        // Réinitialiser le formulaire
         this.title = "";
         this.content = "";
         this.rating = 0;
+  
+        // Rediriger automatiquement vers la fiche du film
+        this.$router.push(`/work/${this.id}`);
       }
     }
   }
   </script>
-  
-  
   
   <style scoped>
   .new-review {
@@ -159,5 +163,4 @@
     text-decoration: underline;
   }
   </style>
-  
   
