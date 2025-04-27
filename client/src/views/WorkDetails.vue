@@ -16,27 +16,6 @@
   
       <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
   
-      <!-- Section Commentaires -->
-      <div class="comments">
-        <h2>Commentaires</h2>
-  
-        <div v-if="comments.length === 0" class="no-comments">Aucun commentaire pour le moment.</div>
-  
-        <ul>
-          <li v-for="(comment, index) in comments" :key="index">{{ comment.content }}</li>
-        </ul>
-  
-        <form @submit.prevent="addComment">
-          <input
-            type="text"
-            v-model="newComment"
-            placeholder="Écrire un commentaire..."
-            required
-          />
-          <button type="submit">Ajouter</button>
-        </form>
-      </div>
-  
       <!-- Section Critiques -->
       <div class="reviews">
         <h2>Critiques</h2>
@@ -52,9 +31,31 @@
             <div class="review-rating">
               <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= review.rating }">★</span>
             </div>
+  
+            <!-- Commentaires liés à cette critique -->
+            <div class="comments">
+              <h4>Commentaires :</h4>
+              <ul>
+                <li v-for="(comment, cIndex) in commentsByReviewId[review.id] || []" :key="cIndex">
+                  {{ comment.content }}
+                </li>
+              </ul>
+  
+              <!-- Formulaire pour ajouter un commentaire -->
+              <form @submit.prevent="addComment(review.id)">
+                <input
+                  type="text"
+                  v-model="newComments[review.id]"
+                  placeholder="Écrire un commentaire..."
+                  required
+                />
+                <button type="submit">Ajouter</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
+  
     </div>
   </template>
   
@@ -68,9 +69,10 @@
     name: 'WorkDetails',
     data() {
       return {
-        newComment: '',
-        comments: [],
         reviews: [],
+        comments: [],
+        commentsByReviewId: {},
+        newComments: {},
         works: [
           {
             id: 1,
@@ -103,39 +105,51 @@
       }
     },
     methods: {
-      async addComment() {
-        if (this.newComment.trim() !== '') {
-          try {
-            await axios.post('http://localhost:5050/api/comments', {
-              review_id: this.work.id,
-              user_id: 1, // temp fixe pour tester
-              content: this.newComment.trim()
-            });
-  
-            alert('✅ Commentaire ajouté !');
-            this.newComment = '';
-  
-            this.fetchComments(); // Recharge pour afficher
-          } catch (error) {
-            console.error('Erreur ajout commentaire :', error);
-            alert('❌ Erreur lors de l’ajout du commentaire');
-          }
-        }
-      },
-      async fetchComments() {
-        try {
-          const response = await axios.get(`http://localhost:5050/api/comments/${this.work.id}`);
-          this.comments = response.data;
-        } catch (error) {
-          console.error('Erreur récupération commentaires :', error);
-        }
-      },
       async fetchReviews() {
         try {
           const response = await axios.get(`http://localhost:5050/api/reviews/${this.work.id}`);
           this.reviews = response.data;
         } catch (error) {
           console.error('Erreur lors du chargement des critiques :', error);
+        }
+      },
+      async fetchComments() {
+        try {
+          const response = await axios.get(`http://localhost:5050/api/comments`);
+          this.comments = response.data;
+  
+          // Organiser les commentaires par review_id
+          this.commentsByReviewId = {};
+          this.comments.forEach(comment => {
+            if (!this.commentsByReviewId[comment.review_id]) {
+              this.commentsByReviewId[comment.review_id] = [];
+            }
+            this.commentsByReviewId[comment.review_id].push(comment);
+          });
+        } catch (error) {
+          console.error('Erreur récupération commentaires :', error);
+        }
+      },
+      async addComment(reviewId) {
+        const content = this.newComments[reviewId];
+  
+        if (!content || content.trim() === '') {
+          return;
+        }
+  
+        try {
+          await axios.post('http://localhost:5050/api/comments', {
+            review_id: reviewId,
+            user_id: 1, // temporaire
+            content: content.trim()
+          });
+  
+          this.newComments[reviewId] = '';
+          alert('✅ Commentaire ajouté !');
+          this.fetchComments();
+        } catch (error) {
+          console.error('Erreur ajout commentaire :', error);
+          alert('❌ Erreur lors de l’ajout du commentaire');
         }
       }
     },
