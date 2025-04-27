@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '@/views/Home.vue';
-import Login from '@/views/Login.vue';
-import Register from '@/views/Register.vue';
-import Admin from '@/views/Admin.vue';
-import WorkDetails from '@/views/WorkDetails.vue';
-import NewReview from '@/views/NewReview.vue';
+import Home from '../views/Home.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import Admin from '../views/Admin.vue';
+import WorkDetails from '../views/WorkDetails.vue';
+import NewReview from '../views/NewReview.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
