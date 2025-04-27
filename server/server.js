@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // Middleware
 app.use(cors());
@@ -11,6 +12,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api', authRoutes);
+app.use('/api', reviewRoutes);
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 5050;
