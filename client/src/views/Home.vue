@@ -1,9 +1,5 @@
 <template>
     <div class="home">
-      
-  
-      
-  
       <!-- Content Section (Text) -->
       <div class="content">
         <h1>Bienvenue sur <span>Popcorn & Opinions</span> 🍿🎬</h1>

@@ -18,18 +18,19 @@
       </div>
   
       <!-- Liste des œuvres filtrées -->
-      <div class="work-grid">
-        <div v-for="work in filteredWorks" :key="work.id" class="work-card">
-          <img :src="work.image" :alt="work.title" />
-          <h2>{{ work.title }}</h2>
-          <p class="rating">
-            <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= work.rating }">★</span>
-          </p>
-          <router-link :to="`/work/${work.id}`" class="details-button">
-            Voir les détails →
-          </router-link>
+     
+        <div class="work-grid">
+          <div v-for="work in filteredWorks" :key="work.id" class="work-card">
+            <img :src="work.image" :alt="work.title" loading="lazy" />
+            <h2>{{ work.title }}</h2>
+            <p class="rating">
+              <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= work.rating }">★</span>
+            </p>
+            <router-link :to="`/work/${work.id}`" class="details-button">
+              Voir les détails →
+            </router-link>
+          </div>
         </div>
-      </div>
     </div>
   </template>
   

@@ -1,6 +1,6 @@
 <template>
     <div class="work-details">
-      <img :src="work.image" :alt="work.title" class="poster" />
+      <img :src="work.image" :alt="work.title" class="poster" loading="lazy" />
       <h1>{{ work.title }}</h1>
   
       <div class="rating">
