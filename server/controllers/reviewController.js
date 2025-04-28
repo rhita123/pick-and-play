@@ -47,4 +47,32 @@ exports.getReviewsByWorkId = (req, res) => {
       res.status(200).json(results);
     });
   };
+
+  // Update les critiques pour un film précis
   
+  exports.updateReview = (req, res) => {
+    const reviewId = req.params.id;
+    const { title, content, rating } = req.body;
+  
+    const sql = 'UPDATE reviews SET title = ?, content = ?, rating = ? WHERE id = ?';
+    db.query(sql, [title, content, rating, reviewId], (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: 'Erreur lors de la modification' });
+      }
+      res.json({ message: 'Critique mise à jour ✅' });
+    });
+  };
+
+    // Supprimer les critiques pour un film précis
+
+  exports.deleteReview = (req, res) => {
+    const reviewId = req.params.id;
+  
+    const sql = 'DELETE FROM reviews WHERE id = ?';
+    db.query(sql, [reviewId], (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: 'Erreur lors de la suppression' });
+      }
+      res.json({ message: 'Critique supprimée ✅' });
+    });
+  };

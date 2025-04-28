@@ -12,4 +12,8 @@ router.get('/', reviewController.getAllReviews);
 // ➡️ Route pour récupérer les critiques d'un film précis
 router.get('/:work_id', reviewController.getReviewsByWorkId);
 
+router.put('/:id', reviewController.updateReview);
+
+router.delete('/:id', reviewController.deleteReview);
+
 module.exports = router;

@@ -1,163 +1,181 @@
 <template>
-    <div class="work-details">
-      <img :src="work.image" :alt="work.title" class="poster" loading="lazy" />
-      <h1>{{ work.title }}</h1>
-  
-      <div class="rating">
-        <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= work.rating }">★</span>
+  <div class="work-details">
+    <img :src="work.image" :alt="work.title" class="poster" loading="lazy" />
+    <h1>{{ work.title }}</h1>
+
+    <div class="rating">
+      <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= work.rating }">★</span>
+    </div>
+
+    <p>{{ work.description }}</p>
+
+    <!-- Bouton Ajouter une Critique -->
+    <router-link :to="`/new-review/${work.id}`" class="add-review-button">
+      + Ajouter une Critique
+    </router-link>
+
+    <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
+
+    <!-- Section Critiques -->
+    <div class="reviews">
+      <h2>Critiques</h2>
+
+      <div v-if="reviews.length === 0" class="no-reviews">
+        Pas encore de critiques pour ce film.
       </div>
-  
-      <p>{{ work.description }}</p>
-  
-      <!-- Bouton Ajouter une Critique -->
-      <router-link :to="`/new-review/${work.id}`" class="add-review-button">
-        + Ajouter une Critique
-      </router-link>
-  
-      <router-link to="/works" class="back-button">← Retour aux Films & Séries</router-link>
-  
-      <!-- Section Critiques -->
-      <div class="reviews">
-        <h2>Critiques</h2>
-  
-        <div v-if="reviews.length === 0" class="no-reviews">
-          Pas encore de critiques pour ce film.
-        </div>
-  
-        <div v-else>
-          <div v-for="(review, index) in reviews" :key="index" class="review-card">
-            <h3>{{ review.title }}</h3>
-            <p>{{ review.content }}</p>
-            <div class="review-rating">
-              <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= review.rating }">★</span>
-            </div>
-  
-            <!-- Commentaires liés à cette critique -->
-            <div class="comments">
-              <h4>Commentaires :</h4>
-              <ul>
-                <li v-for="(comment, cIndex) in commentsByReviewId[review.id] || []" :key="cIndex">
-                  {{ comment.content }}
-                </li>
-              </ul>
-  
-              <!-- Formulaire pour ajouter un commentaire -->
-              <form @submit.prevent="addComment(review.id)">
-                <input
-                  type="text"
-                  v-model="newComments[review.id]"
-                  placeholder="Écrire un commentaire..."
-                  required
-                />
-                <button type="submit">Ajouter</button>
-              </form>
-            </div>
+
+      <div v-else>
+        <div v-for="(review, index) in reviews" :key="index" class="review-card">
+          <h3>{{ review.title }}</h3>
+          <p>{{ review.content }}</p>
+          <div class="review-rating">
+            <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= review.rating }">★</span>
+          </div>
+
+          <!-- Boutons Modifier et Supprimer -->
+          <div class="review-actions">
+            <button @click="editReview(review)">Modifier ✏️</button>
+            <button @click="deleteReview(review.id)">Supprimer ❌</button>
+          </div>
+
+          <!-- Commentaires liés à cette critique -->
+          <div class="comments">
+            <h4>Commentaires :</h4>
+            <ul>
+              <li v-for="(comment, cIndex) in commentsByReviewId[review.id] || []" :key="cIndex">
+                {{ comment.content }}
+              </li>
+            </ul>
+
+            <!-- Formulaire pour ajouter un commentaire -->
+            <form @submit.prevent="addComment(review.id)">
+              <input
+                type="text"
+                v-model="newComments[review.id]"
+                placeholder="Écrire un commentaire..."
+                required
+              />
+              <button type="submit">Ajouter</button>
+            </form>
           </div>
         </div>
       </div>
-  
     </div>
-  </template>
-  
-  <script>
-  import breakingbad from '../assets/breakingbad.webp'
-  import inception from '../assets/inception.webp'
-  import darkknight from '../assets/darkknight.webp'
-  
-  export default {
-    name: 'WorkDetails',
-    data() {
-      return {
-        reviews: [],
-        comments: [],
-        commentsByReviewId: {},
-        newComments: {},
-        works: [
-          {
-            id: 1,
-            title: 'Breaking Bad',
-            image: breakingbad,
-            description: "Walter White, un professeur de chimie atteint d'un cancer, devient fabricant de méthamphétamine.",
-            rating: 5
-          },
-          {
-            id: 2,
-            title: 'Inception',
-            image: inception,
-            description: "Un voleur spécialisé dans l'extraction d'informations secrètes doit implanter une idée dans l'esprit d'une cible.",
-            rating: 4
-          },
-          {
-            id: 3,
-            title: 'The Dark Knight',
-            image: darkknight,
-            description: "Batman affronte le Joker, un criminel psychopathe qui sème le chaos à Gotham City.",
-            rating: 5
-          }
-        ]
-      }
-    },
-    computed: {
-      work() {
-        const id = parseInt(this.$route.params.id)
-        return this.works.find(w => w.id === id) || {}
-      }
-    },
-    methods: {
-      async fetchReviews() {
-        try {
-          const response = await axios.get(`http://localhost:5050/api/reviews/${this.work.id}`);
-          this.reviews = response.data;
-        } catch (error) {
-          console.error('Erreur lors du chargement des critiques :', error);
-        }
-      },
-      async fetchComments() {
-        try {
-          const response = await axios.get(`http://localhost:5050/api/comments`);
-          this.comments = response.data;
-  
-          // Organiser les commentaires par review_id
-          this.commentsByReviewId = {};
-          this.comments.forEach(comment => {
-            if (!this.commentsByReviewId[comment.review_id]) {
-              this.commentsByReviewId[comment.review_id] = [];
-            }
-            this.commentsByReviewId[comment.review_id].push(comment);
-          });
-        } catch (error) {
-          console.error('Erreur récupération commentaires :', error);
-        }
-      },
-      async addComment(reviewId) {
-        const content = this.newComments[reviewId];
-  
-        if (!content || content.trim() === '') {
-          return;
-        }
-  
-        try {
-          await axios.post('http://localhost:5050/api/comments', {
-            review_id: reviewId,
-            user_id: 1, // temporaire
-            content: content.trim()
-          });
-  
-          this.newComments[reviewId] = '';
-          alert('✅ Commentaire ajouté !');
-          this.fetchComments();
-        } catch (error) {
-          console.error('Erreur ajout commentaire :', error);
-          alert('❌ Erreur lors de l’ajout du commentaire');
-        }
-      }
-    },
-    mounted() {
-      this.fetchReviews();
-      this.fetchComments();
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import breakingbad from '../assets/breakingbad.webp';
+import inception from '../assets/inception.webp';
+import darkknight from '../assets/darkknight.webp';
+
+export default {
+  name: 'WorkDetails',
+  data() {
+    return {
+      reviews: [],
+      comments: [],
+      commentsByReviewId: {},
+      newComments: {},
+      works: [
+        { id: 1, title: 'Breaking Bad', image: breakingbad, description: "Walter White, un professeur de chimie atteint d'un cancer, devient fabricant de méthamphétamine.", rating: 5 },
+        { id: 2, title: 'Inception', image: inception, description: "Un voleur spécialisé dans l'extraction d'informations secrètes doit implanter une idée dans l'esprit d'une cible.", rating: 4 },
+        { id: 3, title: 'The Dark Knight', image: darkknight, description: "Batman affronte le Joker, un criminel psychopathe qui sème le chaos à Gotham City.", rating: 5 }
+      ]
+    };
+  },
+  computed: {
+    work() {
+      const id = parseInt(this.$route.params.id);
+      return this.works.find(w => w.id === id) || {};
     }
+  },
+  methods: {
+    async fetchReviews() {
+      try {
+        const response = await axios.get(`http://localhost:5050/api/reviews/${this.work.id}`);
+        this.reviews = response.data;
+      } catch (error) {
+        console.error('Erreur chargement critiques :', error);
+      }
+    },
+    async fetchComments() {
+      try {
+        const response = await axios.get(`http://localhost:5050/api/comments`);
+        this.comments = response.data;
+
+        // Organiser par review_id
+        this.commentsByReviewId = {};
+        this.comments.forEach(comment => {
+          if (!this.commentsByReviewId[comment.review_id]) {
+            this.commentsByReviewId[comment.review_id] = [];
+          }
+          this.commentsByReviewId[comment.review_id].push(comment);
+        });
+      } catch (error) {
+        console.error('Erreur chargement commentaires :', error);
+      }
+    },
+    async addComment(reviewId) {
+      const content = this.newComments[reviewId];
+
+      if (!content || content.trim() === '') return;
+
+      try {
+        await axios.post('http://localhost:5050/api/comments', {
+          review_id: reviewId,
+          user_id: 1, // temporaire
+          content: content.trim()
+        });
+
+        this.newComments[reviewId] = '';
+        alert('✅ Commentaire ajouté !');
+        this.fetchComments();
+      } catch (error) {
+        console.error('Erreur ajout commentaire :', error);
+        alert('❌ Erreur lors de l’ajout');
+      }
+    },
+    async editReview(review) {
+      const newTitle = prompt('Nouveau titre :', review.title);
+      const newContent = prompt('Nouveau contenu :', review.content);
+      const newRating = prompt('Nouvelle note (1-5) :', review.rating);
+
+      if (newTitle && newContent && newRating) {
+        try {
+          await axios.put(`http://localhost:5050/api/reviews/${review.id}`, {
+            title: newTitle,
+            content: newContent,
+            rating: parseInt(newRating)
+          });
+          alert('✅ Critique modifiée');
+          this.fetchReviews();
+        } catch (error) {
+          console.error('Erreur modification critique :', error);
+          alert('❌ Erreur lors de la modification');
+        }
+      }
+    },
+    async deleteReview(reviewId) {
+      if (confirm('Es-tu sûr de vouloir supprimer cette critique ?')) {
+        try {
+          await axios.delete(`http://localhost:5050/api/reviews/${reviewId}`);
+          alert('✅ Critique supprimée');
+          this.fetchReviews();
+        } catch (error) {
+          console.error('Erreur suppression critique :', error);
+          alert('❌ Erreur lors de la suppression');
+        }
+      }
+    }
+  },
+  mounted() {
+    this.fetchReviews();
+    this.fetchComments();
   }
-  </script>
+};
+</script>
   
   
   <style scoped>
@@ -325,5 +343,27 @@
   .review-rating .star.filled {
     color: gold;
   }
+
+  .review-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.review-actions button {
+  background-color: #ff7f50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.review-actions button:hover {
+  background-color: #e04b2d;
+}
   </style>
   
