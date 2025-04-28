@@ -20,40 +20,7 @@
   
   <style scoped>
   
-  
-  /* Navbar */
-  .navbar {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(255, 87, 51, 0.8); /* légère transparence */
-    z-index: 10;
-  }
-  
-  .logo-container img.logo {
-    height: 50px;
-  }
-  
-  .links {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .links a {
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 1.1rem;
-  }
-  
-  .links a:hover {
-    text-decoration: underline;
-  }
-  
+
   /* Content Section */
   .content {
     position: absolute;

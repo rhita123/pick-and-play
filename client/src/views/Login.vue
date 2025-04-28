@@ -75,9 +75,7 @@
     color: #f25c3b;
   }
   
-  .form-group {
-    margin-bottom: 20px;
-  }
+  
   
   label {
     font-weight: bold;
@@ -108,10 +106,6 @@
     background-color: #e04b2d;
   }
   
-  .error {
-    margin-top: 20px;
-    color: red;
-    text-align: center;
-  }
+  
   </style>
   

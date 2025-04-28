@@ -85,13 +85,5 @@
     background-color: #e04b2d;
   }
   
-  .success {
-    color: green;
-    margin-top: 10px;
-  }
   
-  .error {
-    color: red;
-    margin-top: 10px;
-  }
   </style>
