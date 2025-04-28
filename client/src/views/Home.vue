@@ -1,9 +1,6 @@
 <template>
     <div class="home">
-      <!-- Video Background -->
-      <video autoplay muted loop>
-        <source src="../assets/background.mp4" type="video/mp4" />
-      </video>
+      
   
       
   
@@ -22,16 +19,7 @@
   </script>
   
   <style scoped>
-  /* Video Background */
-  video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-  }
+  
   
   /* Navbar */
   .navbar {
