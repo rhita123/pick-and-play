@@ -35,9 +35,9 @@
   
   <script>
   import axios from 'axios'
-  import breakingbad from '../assets/breakingbad.jpg'
-  import inception from '../assets/inception.jpg'
-  import darkknight from '../assets/darkknight.jpg'
+  import breakingbad from '../assets/breakingbad.webp'
+  import inception from '../assets/inception.webp'
+  import darkknight from '../assets/darkknight.webp'
   
   export default {
     name: "NewReview",

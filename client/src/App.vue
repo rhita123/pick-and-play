@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar">
-      <img src="./assets/logo.png" alt="Popcorn & Opinions Logo" class="logo" />
+      <img src="/logo.webp" alt="Popcorn & Opinions Logo" class="logo" />
       <div class="nav-links">
         <router-link to="/">Accueil</router-link>
         <router-link to="/works">Films & Séries</router-link>
