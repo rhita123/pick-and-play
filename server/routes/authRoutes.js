@@ -1,14 +1,15 @@
-// routes/authRoutes.js
+// server/routes/authRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const verifyToken = require('../middleware/verifyToken'); // middleware pour vérifier l'utilisateur
 
-// ➡️ Route pour inscription
+// ROUTES
 router.post('/register', authController.register);
-
-// ➡️ Route pour connexion
 router.post('/login', authController.login);
 
-router.get('/users', authController.getAllUsers);
+// Pour afficher tous les utilisateurs (admin uniquement)
+router.get('/users', verifyToken, authController.getAllUsers);
 
 module.exports = router;
