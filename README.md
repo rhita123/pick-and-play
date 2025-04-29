@@ -52,22 +52,22 @@ node server.js
 
  Le serveur tourne sur : http://localhost:5050
 
-** Lancer le frontend **
+Lancer le frontend 
 
 cd client
 npm install
 npm run serve
 
- Le client tourne sur : http://localhost:8080
+Le client tourne sur : http://localhost:8080
 
- ** Base de données **
+Base de données 
 
 Le fichier SQL est fourni dans le dossier /database/popcorn_opinions.sql.
 
 Pour installer la base :
-	1.	Ouvrir MySQL
-	2.	Créer une base de données :
- 3.	Importer le fichier .sql :
+1.	Ouvrir MySQL
+2.	Créer une base de données :
+3.	Importer le fichier .sql :
 
 CREATE DATABASE popcorn_opinions;
 mysql -u root -p popcorn_opinions < database/popcorn_opinions.sql
