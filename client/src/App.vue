@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <nav class="navbar">
-      <img src="/logo.webp" alt="Popcorn & Opinions Logo" class="logo" />
+      <img src="/logo.webp" alt="Pick & Play Logo" class="logo" />
       <div class="nav-links">
         <router-link to="/">Accueil</router-link>
-        <router-link to="/works">Films & Séries</router-link>
+        <router-link to="/works">Catalogue</router-link>
         <router-link to="/login">Connexion</router-link>
         <router-link to="/register">Inscription</router-link>
         
@@ -34,42 +34,45 @@ export default {
 </script>
 <style scoped>
 .navbar {
-  background-color: #f25c3b;
-  padding: 10px 30px;
+  background: linear-gradient(to right, #ffe082, #80d8ff); /* Jaune ➜ bleu */
+  padding: 12px 30px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Laisser space-between pour diviser la zone entre le logo et les liens */
+  justify-content: space-between;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-  height: 50px;
-  margin-right: 50px; /* Ajouter un petit espace après le logo */
+  height: 45px;
 }
 
 .nav-links {
   display: flex;
-  gap: 25px;
-  justify-content: center; /* Centrer les liens de navigation */
-  flex: 1; /* Prendre tout l'espace restant pour centrer les liens */
+  gap: 30px;
+  justify-content: center;
+  flex: 1;
 }
 
 .nav-links a {
-  color: #fff;
-  font-weight: bold;
+  color: #333;
+  font-weight: 600;
   text-decoration: none;
   font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  text-decoration: underline;
+  color: #2196f3;
 }
+
 
 /* Pour éviter que le contenu soit caché derrière la navbar */
 #app > *:not(.navbar) {
   margin-top: 80px;
 }
+
 </style>
