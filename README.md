@@ -1,76 +1,67 @@
- Popcorn & Opinions
+# Pick&Play – Catalogue interactif de jeux de société
 
-Une plateforme communautaire pour publier, noter et commenter des films et séries — pensée avec une démarche éco-conçue dans le cadre du projet de Green IT.
+Pick&Play est une application web permettant aux utilisateurs de découvrir, noter, commenter et sauvegarder des jeux de société dans une wishlist personnelle. L’objectif est de faciliter la recherche de jeux adaptés à tous les profils de joueurs, tout en offrant une interface intuitive et accessible.
 
-Objectif du projet
+---
 
-**Popcorn & Opinions** a été développé dans le cadre du MiniProjet Green IT 2024-2025 à l’Efrei Paris.  
+##  Fonctionnalités
 
-L’objectif est de créer un site web fonctionnel tout en analysant et optimisant son **empreinte carbone**, à travers des outils et pratiques d’éco-conception numérique.
+### Pour tous les utilisateurs :
+-  Parcourir un catalogue de jeux
+-  Filtrer par nombre de joueurs, âge minimum, catégories, etc.
+-  Voir une fiche détaillée d’un jeu
+-  Noter et commenter des jeux
+-  Ajouter et retirer des jeux de leur wishlist
+-  Consulter leur propre wishlist
 
-Équipe projet
+### Pour les administrateurs :
+-  Ajouter un nouveau jeu
+-  Modifier les informations d’un jeu
+-  Supprimer un jeu du catalogue
+-  Marquer un jeu comme "loué" ou "disponible"
 
-- **Rhita Moummade**  
-- **Anaïs Robert**  
-- **Begüm Sözer**
+---
 
-Fonctionnalités principales
+##  Stack technique
 
-	•	Création de comptes utilisateurs (inscription/connexion sécurisées)
-	•	Rôles : utilisateur classique / administrateur
-	•	Espace d’administration (gestion et suppression de comptes)
-	•	Publication de critiques de films/séries
-	•	Notation des œuvres (système de 5 étoiles)
-	•	Commentaires sous les critiques
-	•	Recherche, tri et filtrage des contenus
-	•	Version optimisée éco-conçue après audit (réduction poids, requêtes, performances)
+### Frontend
+- HTML / CSS / JavaScript
+- Vue.js (Vite ou Vue CLI)
 
- Technologies utilisées
+### Backend
+- Node.js + Express 
+- Connexion MySQL avec drivers adaptés
 
-	Frontend : Vue.js (HTML / CSS / JavaScript)
-	•	Backend : Node.js + Express
-	•	Base de données : MySQL
-	•	Éco-conception : bonnes pratiques green IT
+### Base de données
+- MySQL
+- Procédures stockées, triggers et vues SQL optimisées
+- Script complet dans `livrable3.sql`
+
+---
+
+##  Structure du projet
+
+```bash
+pick-and-play/
+├── frontend/
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       ├── views/
+│      
+├── backend/
+│   └── routes/
+│   └── models/
+│   └── controllers/
+│   
+├── livrables/
+│   ├── livrable1.pdf
+│   ├── livrable2.pdf
+│   ├── livrable3.pdf
+│   └── livrable3.sql
+├── README.md
 
 
-Analyse Green IT
-
-- Estimation de l’empreinte carbone du site (avant/après optimisation)
-- Réduction de l’impact via : compression des assets, lazy loading, design épuré, limitation des appels serveur
-
-  Installation du projet
-
-**  Cloner le dépôt **
-git clone https://github.com/rhita123/-Popcorn-Opinions.git
-cd -Popcorn-Opinions
-
-** Lancer le backend ** 
-
-cd server
-npm install
-node server.js
-
- Le serveur tourne sur : http://localhost:5050
-
-Lancer le frontend 
-
-cd client
-npm install
-npm run serve
-
-Le client tourne sur : http://localhost:8080
-
-Base de données 
-
-Le fichier SQL est fourni dans le dossier /database/popcorn_opinions.sql.
-
-Pour installer la base :
-1.	Ouvrir MySQL
-2.	Créer une base de données :
-3.	Importer le fichier .sql :
-
-CREATE DATABASE popcorn_opinions;
-mysql -u root -p popcorn_opinions < database/popcorn_opinions.sql
 
 
 
