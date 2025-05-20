@@ -63,3 +63,21 @@ exports.louerJeu = (req, res) => {
     res.status(200).json({ message: 'Jeu loué avec succès' });
   });
 };
+
+exports.getGamesByMinNote = (req, res) => {
+  const minNote = parseFloat(req.query.minNote);
+
+  if (isNaN(minNote)) {
+    return res.status(400).json({ error: 'minNote doit être un nombre valide' });
+  }
+
+  const sql = 'SELECT * FROM Jeu WHERE Note_moyenne >= ?';
+
+  db.query(sql, [minNote], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des jeux filtrés :', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+    res.status(200).json(results);
+  });
+};
