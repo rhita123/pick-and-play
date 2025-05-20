@@ -26,3 +26,21 @@ exports.getAllGames = (req, res) => {
     res.status(200).json(results);
   });
 };
+
+exports.getGameById = (req, res) => {
+  const gameId = req.params.id;
+  const sql = 'SELECT * FROM Jeu WHERE ID_Jeu = ?';
+
+  db.query(sql, [gameId], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération du jeu :', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Jeu non trouvé' });
+    }
+
+    res.status(200).json(results[0]);
+  });
+};
