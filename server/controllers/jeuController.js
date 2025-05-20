@@ -14,3 +14,15 @@ exports.addGame = (req, res) => {
     res.status(201).json({ message: 'Jeu ajouté avec succès', gameId: result.insertId });
   });
 };
+
+exports.getAllGames = (req, res) => {
+  const sql = 'SELECT * FROM Jeu';
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des jeux :', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+    res.status(200).json(results);
+  });
+};

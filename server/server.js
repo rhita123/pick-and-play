@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 app.use('/api', userRoutes);
 // app.use('/admin', adminRoutes);
 app.use('/jeux', jeuRoutes);
+app.use('/jeux', jeuRoutes);
 
 
 // Démarrage serveur
