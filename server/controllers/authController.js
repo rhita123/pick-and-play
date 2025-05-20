@@ -45,7 +45,7 @@ exports.loginUser = (req, res) => {
     bcrypt.compare(Mot_de_passe, user.Mot_de_passe, (err, isMatch) => {
       if (err || !isMatch) return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
 
-      const token = jwt.sign({ id: user.ID_Utilisateur, email: user.Email }, JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ id: user.ID_Utilisateur, email: user.Email, role: user.Role }, JWT_SECRET, { expiresIn: '1h' });
       res.status(200).json({ message: 'Connexion réussie', token });
     });
   });

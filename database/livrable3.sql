@@ -342,3 +342,10 @@ BEGIN
 END //
 
 DELIMITER ;
+
+ALTER TABLE Utilisateur
+ADD Role ENUM('utilisateur', 'admin') DEFAULT 'utilisateur';
+
+UPDATE Utilisateur
+SET Role = 'admin'
+WHERE Email = 'rhita@example.com';

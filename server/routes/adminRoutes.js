@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { addGame } = require('../controllers/adminController');
+const db = require('../config/db');
 const verifyToken = require('../middleware/verifyToken');
 
 // Middleware pour vérifier le rôle admin
@@ -14,6 +14,20 @@ const isAdmin = (req, res, next) => {
   }
 };
 
-router.post('/add-game', verifyToken, isAdmin, addGame);
+router.post('/add-game', verifyToken, isAdmin, (req, res) => {
+  const { Nom, Genre, Description, Note_moyenne, Url, Image, Min_Joueurs, Max_Joueurs, Duree, Age } = req.body;
+
+  const sql = `INSERT INTO Jeu (Nom, Genre, Description, Note_moyenne, Url, Image, Min_Joueurs, Max_Joueurs, Duree, Age, Est_Loue)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, false)`;
+
+  db.query(sql, [Nom, Genre, Description, Note_moyenne, Url, Image, Min_Joueurs, Max_Joueurs, Duree, Age], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de l\'ajout :', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+
+    res.status(201).json({ message: 'Jeu ajouté avec succès par admin', id: result.insertId });
+  });
+});
 
 module.exports = router;

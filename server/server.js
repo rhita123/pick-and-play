@@ -14,6 +14,8 @@ const jeuRoutes = require('./routes/jeuRoutes');
 const authRoutes = require('./routes/authRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const notationRoutes = require('./routes/notationRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -33,6 +35,7 @@ app.use('/jeux', jeuRoutes);
 app.use('/auth', authRoutes);
 app.use('/wishlist', wishlistRoutes);
 app.use('/jeux', notationRoutes);
+app.use('/admin', adminRoutes);
 
 
 // Démarrage serveur
