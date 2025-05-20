@@ -5,7 +5,7 @@ import Register from '../views/Register.vue';
 import WorkList from '../views/WorkList.vue';
 import WorkDetails from '../views/WorkDetails.vue';
 import NewReview from '../views/NewReview.vue';
-import AdminPage from '../views/Admin.vue';  // Importer la page Admin
+import AdminDashboard from '../views/AdminDashboard.vue';  // Importer la page AdminDashboard
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -15,7 +15,7 @@ const routes = [
   { path: '/new-review/:id', name: 'NewReview', component: NewReview, props: true },
   { path: '/work/:id', name: 'WorkDetails', component: WorkDetails, props: true },
   // Nouvelle route pour la page Admin
-  { path: '/admin', name: 'Admin', component: AdminPage, meta: { requiresAuth: true, role: 'admin' } }
+  { path: '/admin', name: 'Admin', component: AdminDashboard, meta: { requiresAuth: true, role: 'admin' } }
 ];
 
 const router = createRouter({
@@ -25,20 +25,30 @@ const router = createRouter({
 
 // Vérification du rôle dans beforeEach
 router.beforeEach((to, from, next) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiredRole = to.meta?.role;
 
-  // Si la route nécessite une authentification
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!user) {
-      next({ name: 'Login' });  // Redirige vers Login si non authentifié
-    } else if (to.meta.role && user.role !== to.meta.role) {
-      next({ name: 'Home' });  // Redirige vers Home si l'utilisateur n'est pas admin
-    } else {
-      next();  // Permet l'accès si l'utilisateur est bien authentifié et a le bon rôle
+  if (requiresAuth) {
+    if (!token) {
+      return next({ name: 'Login' });
     }
-  } else {
-    next();  // Permet l'accès aux routes publiques
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+
+      if (requiredRole && payload.role !== requiredRole) {
+        return next({ name: 'Home' });
+      }
+
+      return next();
+    } catch (error) {
+      console.error('Erreur lors du décodage du token :', error);
+      return next({ name: 'Login' });
+    }
   }
+
+  next();
 });
 
 export default router;
