@@ -11,4 +11,6 @@ router.post('/secure-test', verifyToken, (req, res) => {
 });
 router.patch('/:id/louer', verifyToken, jeuController.louerJeu);
 
+router.post('/:id/note', verifyToken, jeuController.noterJeu);
+
 module.exports = router;

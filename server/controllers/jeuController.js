@@ -81,3 +81,40 @@ exports.getGamesByMinNote = (req, res) => {
     res.status(200).json(results);
   });
 };
+exports.noterJeu = (req, res) => {
+  const jeuId = req.params.id;
+  const { note } = req.body;
+
+  if (typeof note !== 'number' || note < 0 || note > 10) {
+    return res.status(400).json({ error: 'La note doit être un nombre entre 0 et 10.' });
+  }
+
+  // On commence par récupérer l'ancienne moyenne et le nombre de notes (s'il existe une colonne pour ça)
+  const getSql = 'SELECT Note_moyenne FROM Jeu WHERE ID_Jeu = ?';
+
+  db.query(getSql, [jeuId], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération de la note :', err);
+      return res.status(500).json({ error: 'Erreur serveur.' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Jeu non trouvé' });
+    }
+
+    const ancienneNote = results[0].Note_moyenne || 0;
+
+    // Nouvelle moyenne simple (à ajuster si tu veux stocker nombre de votes)
+    const nouvelleNote = (ancienneNote + note) / 2;
+
+    const updateSql = 'UPDATE Jeu SET Note_moyenne = ? WHERE ID_Jeu = ?';
+    db.query(updateSql, [nouvelleNote, jeuId], (err2) => {
+      if (err2) {
+        console.error('Erreur lors de la mise à jour de la note :', err2);
+        return res.status(500).json({ error: 'Erreur serveur.' });
+      }
+
+      res.status(200).json({ message: 'Note enregistrée avec succès.' });
+    });
+  });
+};
