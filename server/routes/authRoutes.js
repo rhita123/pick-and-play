@@ -1,4 +1,4 @@
-// server/routes/authRoutes.js
+/*// server/routes/authRoutes.js
 
 const express = require('express');
 const router = express.Router();
@@ -12,4 +12,4 @@ router.post('/login', authController.login);
 // Pour afficher tous les utilisateurs (admin uniquement)
 router.get('/users', verifyToken, authController.getAllUsers);
 
-module.exports = router;
+module.exports = router;*/

@@ -6,11 +6,12 @@ require('dotenv').config();
 const db = require('./config/db');
 
 // ⬇️ On importe les routes
-const authRoutes = require('./routes/authRoutes');
-const reviewRoutes = require('./routes/reviewRoutes');
-const commentRoutes = require('./routes/commentRoutes'); 
-const userRoutes = require('./routes/userRoutes');
 
+// const reviewRoutes = require('./routes/reviewRoutes');
+// const commentRoutes = require('./routes/commentRoutes'); 
+const userRoutes = require('./routes/userRoutes');
+// const adminRoutes = require('./routes/adminRoutes');
+const jeuRoutes = require('./routes/jeuRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -20,10 +21,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // ⬇️ On utilise les routes
-app.use('/api', authRoutes);         // localhost:5050/api/register, /api/login
-app.use('/api/reviews', reviewRoutes); // localhost:5050/api/reviews/
-app.use('/api/comments', commentRoutes); // <--- connecter les commentaires
+
+// app.use('/api/reviews', reviewRoutes); // localhost:5050/api/reviews/
+// app.use('/api/comments', commentRoutes); // <--- connecter les commentaires
 app.use('/api', userRoutes);
+// app.use('/admin', adminRoutes);
+app.use('/jeux', jeuRoutes);
 
 
 // Démarrage serveur

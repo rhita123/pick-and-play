@@ -24,17 +24,19 @@ CREATE TABLE Utilisateur (
 CREATE TABLE Jeu (
     ID_Jeu INT AUTO_INCREMENT PRIMARY KEY,
     Nom VARCHAR(255) NOT NULL,
+    Genre VARCHAR(255),
     Description TEXT,
-    Nombre_Joueurs INT,
-    Age_Minimum INT,
+    Note_moyenne FLOAT,
     Url VARCHAR(255),
     Image VARCHAR(255),
-    Note_moyenne FLOAT,
-    Not_moyenne_generale FLOAT,
-    Rang INT
+    Min_Joueurs INT,
+    Max_Joueurs INT,
+    Duree VARCHAR(50),
+    Age VARCHAR(10),
+    Est_Loue BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE Categorie ( -- ATTENTION ici : sans accent
+CREATE TABLE Categorie ( 
     ID_Categorie INT AUTO_INCREMENT PRIMARY KEY,
     Nom VARCHAR(255) NOT NULL
 );
@@ -82,41 +84,41 @@ CREATE TABLE Abonnements (
 );
 
 -- Insertions dans la table Jeu
-INSERT INTO Jeu (ID_Jeu, Nom, Description, Nombre_Joueurs, Age_Minimum, Url, Image, Note_moyenne, Not_moyenne_generale, Rang) VALUES
-(NULL, 'Pandemic',
+INSERT INTO Jeu (ID_Jeu, Nom, Genre, Description, Note_moyenne, Url, Image, Min_Joueurs, Max_Joueurs, Duree, Age, Est_Loue) VALUES
+(NULL, 'Pandemic', NULL,
 'In Pandemic, several virulent diseases have broken out simultaneously all over the world! The players are disease-fighting specialists whose mission is to treat disease hotspots while researching cures for each of four plagues before they get out of hand. The game board depicts several major population centers on Earth. On each turn, a player can use up to four actions to travel between cities, treat infected populaces, discover a cure, or build a research station. A deck of cards provides the players with these abilities, but sprinkled throughout this deck are Epidemic! cards that accelerate and intensify the diseases activity. A second, separate deck of cards controls the normal spread of the infections. Taking a unique role within the team, players must plan their strategy to mesh with their specialists strengths in order to conquer the diseases.',
-4, 10,
+7.57,
 'https://boardgamegeek.com/boardgame/30549/pandemic',
 'https://cf.geekdo-images.com/0dgZ00R4Eo35vFpwGZmYdg__thumb/img/pJVoMc0NqtvRTgq-vobBVVZcdas=/fit-in/200x150/filters:strip_icc()/pic2452831.jpg',
-7.57, 7.34, 97),
+4, 4, NULL, '10', FALSE),
 
-(NULL, 'Dominion',
+(NULL, 'Dominion', NULL,
 'Dominion (Second Edition), released in 2016, replaced the original base game of Dominion. It includes updates to several cards and rule refinements based on years of gameplay feedback.',
-4, 13,
+7.6,
 'https://boardgamegeek.com/boardgame/36218/dominion',
 'https://cf.geekdo-images.com/3nG1J9aB8OsX97d4uM4rdA__thumb/img/fFTdJVDWmSlpHkfh-oYyNQdtq7k=/fit-in/200x150/filters:strip_icc()/pic3312156.jpg',
-7.6, 7.44, 95),
+2, 4, NULL, '13', FALSE),
 
-(NULL, '7 Wonders Duel',
+(NULL, '7 Wonders Duel', NULL,
 'In 7 Wonders Duel, each player is leading a civilization and will, over the course of three ages, construct buildings and wonders. In many ways, 7 Wonders Duel resembles its parent game 7 Wonders as over three ages players acquire cards that provide resources or advance their military or scientific development in order to develop a civilization and complete wonders.',
-2, 10,
+8.1,
 'https://boardgamegeek.com/boardgame/173346/7-wonders-duel',
 'https://cf.geekdo-images.com/pZx4UeMS9K4TzBO2JVR2Zw__thumb/img/ahzGUDi1Sso5X-ETUkCDHMe38Xs=/fit-in/200x150/filters:strip_icc()/pic3376065.jpg',
-8.1, 7.88, 15),
+2, 2, NULL, '10', FALSE),
 
-(NULL, 'Terraforming Mars',
+(NULL, 'Terraforming Mars', NULL,
 'In Terraforming Mars, you play one of several corporations with different characteristics. You work together in the terraforming process, but compete for getting victory points awarded not only for your contribution to the terraforming, but also for advancing human infrastructure throughout the solar system.',
-5, 12,
+8.4,
 'https://boardgamegeek.com/boardgame/167791/terraforming-mars',
 'https://cf.geekdo-images.com/xDd2QeMevZLmlU6T2Fxtcg__thumb/img/YsFRKMtRWFCQw1IFDtGOn3POT7o=/fit-in/200x150/filters:strip_icc()/pic3536616.jpg',
-8.4, 8.2, 4),
+1, 5, NULL, '12', FALSE),
 
-(NULL, 'Ticket to Ride: Europe',
+(NULL, 'Ticket to Ride: Europe', NULL,
 'Ticket to Ride: Europe takes you on a train adventure to the great cities of turn-of-the-century Europe. From Edinburgh to Constantinople and from Lisbon to Moscow, you will visit cities across Europe. Like the original Ticket to Ride, the game is elegantly simple, can be learned in five minutes, and appeals to both families and experienced gamers.',
-5, 8,
+7.9,
 'https://boardgamegeek.com/boardgame/14996/ticket-ride-europe',
 'https://cf.geekdo-images.com/sLbL2_3k4dPtR8KM7cXarA__thumb/img/gNOz8aGegm_yG71lKu4bOaZmkjU=/fit-in/200x150/filters:strip_icc()/pic66668.jpg',
-7.9, 7.68, 24);
+2, 5, NULL, '8', FALSE);
 
 -- Insertions dans la table Utilisateur
 INSERT INTO Utilisateur (Nom, Email, Mot_de_passe) VALUES 
@@ -294,9 +296,6 @@ BEGIN
 END //
 
 DELIMITER ;
-
-ALTER TABLE Jeu
-ADD COLUMN Est_Loue BOOLEAN DEFAULT FALSE;
 
 DELIMITER //
 
