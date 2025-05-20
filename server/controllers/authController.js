@@ -1,5 +1,3 @@
-
-
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -21,7 +19,16 @@ exports.registerUser = (req, res) => {
         return res.status(500).json({ error: 'Erreur serveur' });
       }
 
-      res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
+      const userId = result.insertId;
+      const wishlistSql = 'INSERT INTO Wishlist (ID_Utilisateur) VALUES (?)';
+
+      db.query(wishlistSql, [userId], (wishlistErr) => {
+        if (wishlistErr) {
+          return res.status(500).json({ error: 'Utilisateur créé mais erreur sur la wishlist' });
+        }
+
+        res.status(201).json({ message: 'Utilisateur enregistré avec succès et wishlist créée' });
+      });
     });
   });
 };

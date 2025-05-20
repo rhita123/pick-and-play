@@ -12,6 +12,7 @@ const userRoutes = require('./routes/userRoutes');
 // const adminRoutes = require('./routes/adminRoutes');
 const jeuRoutes = require('./routes/jeuRoutes');
 const authRoutes = require('./routes/authRoutes');
+const wishlistRoutes = require('./routes/wishlistRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -29,7 +30,7 @@ app.use('/api', userRoutes);
 // app.use('/admin', adminRoutes);
 app.use('/jeux', jeuRoutes);
 app.use('/auth', authRoutes);
-
+app.use('/wishlist', wishlistRoutes);
 // Démarrage serveur
 app.listen(PORT, () => {
   console.log(`✅ Serveur lancé sur http://localhost:${PORT}`);
