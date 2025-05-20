@@ -30,4 +30,24 @@ router.post('/add-game', verifyToken, isAdmin, (req, res) => {
   });
 });
 
+
+// Supprimer un jeu (admin uniquement)
+router.delete('/jeux/:id', verifyToken, isAdmin, (req, res) => {
+  const id = req.params.id;
+
+  const sql = 'DELETE FROM Jeu WHERE ID_Jeu = ?';
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la suppression du jeu :', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Jeu non trouvé' });
+    }
+
+    res.status(200).json({ message: 'Jeu supprimé avec succès' });
+  });
+});
+
 module.exports = router;
