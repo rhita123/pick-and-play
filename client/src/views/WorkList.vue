@@ -1,84 +1,91 @@
 <template>
     <div class="work-list">
-      <h1>Films & Séries</h1>
+      <h1>Catalogue des jeux</h1>
   
       <!-- Barre de recherche et filtre -->
       <div class="filters">
         <input 
           type="text" 
           v-model="searchQuery" 
-          placeholder="Rechercher un film ou une série..."
+          placeholder="Rechercher un jeu..."
         />
         <select v-model="minRating">
           <option value="0">Toutes les notes</option>
-          <option value="3">Note ≥ 3</option>
-          <option value="4">Note ≥ 4</option>
-          <option value="5">Note = 5</option>
+          <option value="5">Note ≥ 5</option>
+          <option value="7">Note ≥ 7</option>
+          <option value="9">Note ≥ 9</option>
         </select>
       </div>
   
       <!-- Liste des œuvres filtrées -->
      
         <div class="work-grid">
-          <div v-for="work in filteredWorks" :key="work.id" class="work-card">
-            <img :src="work.image" :alt="work.title" loading="lazy" />
-            <h2>{{ work.title }}</h2>
-            <p class="rating">
-              <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= work.rating }">★</span>
-            </p>
-            <router-link :to="`/work/${work.id}`" class="details-button">
+          <div v-for="work in filteredWorks" :key="work.ID_Jeu" class="work-card">
+            <img :src="work.Image" :alt="work.Nom" loading="lazy" />
+            <h2>{{ work.Nom }}</h2>
+            <p class="rating">Note : {{ work.Note_moyenne }}/10</p>
+            <router-link :to="`/work/${work.ID_Jeu}`" class="details-button">
               Voir les détails →
             </router-link>
+            <button class="wishlist-button" @click="addToWishlist(work.ID_Jeu)">Ajouter à la wishlist</button>
+            <button class="louer-button" @click="louerJeu(work.ID_Jeu)">Louer ce jeu</button>
           </div>
         </div>
     </div>
   </template>
   
   <script>
-  import breakingbad from '../assets/breakingbad.webp'
-  import inception from '../assets/inception.webp'
-  import darkknight from '../assets/darkknight.webp'
-  
+  import axios from 'axios';
   export default {
     name: 'WorkList',
     data() {
       return {
         searchQuery: '',
         minRating: 0,
-        works: [
-          {
-            id: 1,
-            title: 'Breaking Bad',
-            image: breakingbad,
-            description: "Walter White, professeur de chimie, devient fabricant de méthamphétamine.",
-            rating: 5
-          },
-          {
-            id: 2,
-            title: 'Inception',
-            image: inception,
-            description: "Un voleur d'idées doit implanter une pensée dans un rêve.",
-            rating: 4
-          },
-          {
-            id: 3,
-            title: 'The Dark Knight',
-            image: darkknight,
-            description: "Batman affronte son ennemi le Joker pour sauver Gotham.",
-            rating: 5
-          }
-        ]
+        works: []
       }
     },
     computed: {
       filteredWorks() {
         return this.works.filter(work => {
-          const matchesTitle = work.title.toLowerCase().includes(this.searchQuery.toLowerCase());
-          const matchesRating = work.rating >= this.minRating;
+          const matchesTitle = work.Nom.toLowerCase().includes(this.searchQuery.toLowerCase());
+          const matchesRating = work.Note_moyenne >= this.minRating;
           return matchesTitle && matchesRating;
         });
       }
-    }
+    },
+    methods: {
+      fetchWorks() {
+        axios.get('http://localhost:5050/jeux')
+          .then(response => {
+            this.works = response.data;
+          })
+          .catch(error => {
+            console.error('Erreur lors de la récupération des jeux :', error);
+          });
+      },
+      addToWishlist(id) {
+        alert("Jeu ajouté à la wishlist !");
+      },
+      louerJeu(id) {
+        axios.patch(`http://localhost:5050/jeux/${id}/louer`, {}, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+        .then(() => {
+          alert("Le jeu a bien été loué !");
+          this.fetchWorks(); // met à jour l'affichage
+        })
+        .catch(err => {
+          alert("Erreur lors de la location du jeu.");
+          console.error(err);
+        });
+      }
+    },
+    mounted() {
+      this.fetchWorks();
+    },
   }
   </script>
   
@@ -133,15 +140,6 @@
     margin: 10px 0;
   }
   
-  .star {
-    font-size: 1.5rem;
-    color: #ccc;
-  }
-  
-  .star.filled {
-    color: gold;
-  }
-  
   .details-button {
     display: inline-block;
     margin-top: 10px;
@@ -155,5 +153,37 @@
   
   .details-button:hover {
     background-color: #e04b2d;
+  }
+
+  .wishlist-button {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #3b82f6;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .wishlist-button:hover {
+    background-color: #2563eb;
+  }
+
+  .louer-button {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #10b981;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .louer-button:hover {
+    background-color: #059669;
   }
   </style>
