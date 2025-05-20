@@ -50,4 +50,33 @@ router.delete('/jeux/:id', verifyToken, isAdmin, (req, res) => {
   });
 });
 
+// Modifier un jeu (admin uniquement)
+router.put('/jeux/:id', verifyToken, isAdmin, (req, res) => {
+  const id = req.params.id;
+  const {
+    Nom, Genre, Description, Note_moyenne,
+    Url, Image, Min_Joueurs, Max_Joueurs, Duree, Age
+  } = req.body;
+
+  const sql = `
+    UPDATE Jeu SET
+      Nom = ?, Genre = ?, Description = ?, Note_moyenne = ?, Url = ?, Image = ?,
+      Min_Joueurs = ?, Max_Joueurs = ?, Duree = ?, Age = ?
+    WHERE ID_Jeu = ?
+  `;
+
+  db.query(sql, [Nom, Genre, Description, Note_moyenne, Url, Image, Min_Joueurs, Max_Joueurs, Duree, Age, id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la modification :', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Jeu non trouvé' });
+    }
+
+    res.status(200).json({ message: 'Jeu modifié avec succès' });
+  });
+});
+
 module.exports = router;
