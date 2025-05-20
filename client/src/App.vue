@@ -8,10 +8,10 @@
         <router-link v-if="!isAuthenticated" to="/login">Connexion</router-link>
         <router-link v-if="!isAuthenticated" to="/register">Inscription</router-link>
         <router-link v-if="isAdmin" to="/admin">Espace Admin</router-link>
-        <a v-if="isAuthenticated" href="#" @click.prevent="logout">Déconnexion</a>
+        <button v-if="isAuthenticated" @click="logout">Déconnexion</button>
       </div>
     </nav>
-    
+
     <router-view />
   </div>
 </template>
@@ -21,42 +21,41 @@ export default {
   name: 'App',
   data() {
     return {
-      user: null
-    }
-  },
-  mounted() {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      this.user = JSON.parse(userData);
-      console.log(this.user); // pour vérifier ce qui est stocké
-    }
+      token: localStorage.getItem('token')
+    };
   },
   computed: {
     isAuthenticated() {
-      return !!localStorage.getItem('token');
+      return !!this.token;
     },
     isAdmin() {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) return false;
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (!this.token) return false;
+        const payload = JSON.parse(atob(this.token.split('.')[1]));
         return payload.role === 'admin';
       } catch {
         return false;
       }
     }
   },
+  watch: {
+    $route() {
+      this.token = localStorage.getItem('token');
+    }
+  },
   methods: {
     logout() {
       localStorage.removeItem('token');
+      this.token = null;
       this.$router.push('/');
     }
   }
-}
+};
 </script>
+
 <style scoped>
 .navbar {
-  background: linear-gradient(to right, #ffe082, #80d8ff); /* Jaune ➜ bleu */
+  background: linear-gradient(to right, #ffe082, #80d8ff);
   padding: 12px 30px;
   display: flex;
   align-items: center;
@@ -79,22 +78,26 @@ export default {
   flex: 1;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-links button {
   color: #333;
   font-weight: 600;
   text-decoration: none;
   font-size: 1rem;
-  transition: color 0.3s ease;
+  cursor: pointer;
+  font-family: inherit;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links button:hover {
   color: #2196f3;
 }
-
 
 /* Pour éviter que le contenu soit caché derrière la navbar */
 #app > *:not(.navbar) {
   margin-top: 80px;
 }
-
 </style>
