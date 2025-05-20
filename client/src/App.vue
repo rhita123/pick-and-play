@@ -8,6 +8,7 @@
         <router-link v-if="!isAuthenticated" to="/login">Connexion</router-link>
         <router-link v-if="!isAuthenticated" to="/register">Inscription</router-link>
         <router-link v-if="isAdmin" to="/admin">Espace Admin</router-link>
+        <router-link v-if="isAuthenticated" to="/wishlist">Ma Wishlist</router-link>
         <button v-if="isAuthenticated" @click="logout">Déconnexion</button>
       </div>
     </nav>

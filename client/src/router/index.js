@@ -14,6 +14,7 @@ const routes = [
   { path: '/works', name: 'WorkList', component: WorkList },
   { path: '/new-review/:id', name: 'NewReview', component: NewReview, props: true },
   { path: '/work/:id', name: 'WorkDetails', component: WorkDetails, props: true },
+  { path: '/wishlist', name: 'Wishlist', component: () => import('../views/Wishlist.vue'), meta: { requiresAuth: true } },
   // Nouvelle route pour la page Admin
   { path: '/admin', name: 'Admin', component: AdminDashboard, meta: { requiresAuth: true, role: 'admin' } }
 ];

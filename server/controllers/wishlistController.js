@@ -13,8 +13,8 @@ exports.addToWishlist = (req, res) => {
     if (err || rows.length === 0) return res.status(500).json({ error: 'Wishlist introuvable' });
 
     const idWishlist = rows[0].ID_Wishlist;
-    const sql = 'CALL Ajouter_Jeu_Wishlist(?, ?)';
-    db.query(sql, [idWishlist, idJeu], (err) => {
+    const insertSql = 'INSERT IGNORE INTO Wishlist_Jeux (ID_Wishlist, ID_Jeu) VALUES (?, ?)';
+    db.query(insertSql, [idWishlist, idJeu], (err) => {
       if (err) return res.status(500).json({ error: 'Erreur lors de l\'ajout à la wishlist' });
       res.status(200).json({ message: 'Jeu ajouté à la wishlist' });
     });
