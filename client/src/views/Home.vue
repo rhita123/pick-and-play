@@ -9,7 +9,7 @@
       <div class="content">
         <h1>Bienvenue sur <span>Pick&Play</span> 🎲</h1>
         <p>Explorez un monde de jeux de société, partagez vos avis et organisez vos soirées ludiques !</p>
-        <router-link to="/catalogue" class="cta-button">Découvrir les jeux</router-link>
+        <router-link to="/works" class="cta-button">Découvrir les jeux</router-link>
       </div>
     </div>
   </div>
