@@ -5,13 +5,13 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'vraimentUnSecretChangeLeDansEnv'; // à sécuriser plus tard
 
 exports.registerUser = (req, res) => {
-  const { Nom, Email, Mot_de_passe } = req.body;
+  const { Nom, Email, Mot_de_passe, Role } = req.body;
 
   bcrypt.hash(Mot_de_passe, 10, (err, hashedPassword) => {
     if (err) return res.status(500).json({ error: 'Erreur lors du hash du mot de passe' });
 
-    const sql = 'INSERT INTO Utilisateur (Nom, Email, Mot_de_passe) VALUES (?, ?, ?)';
-    db.query(sql, [Nom, Email, hashedPassword], (err, result) => {
+    const sql = 'INSERT INTO Utilisateur (Nom, Email, Mot_de_passe, Role) VALUES (?, ?, ?, ?)';
+    db.query(sql, [Nom, Email, hashedPassword, Role], (err, result) => {
       if (err) {
         if (err.code === 'ER_DUP_ENTRY') {
           return res.status(400).json({ error: 'Email déjà utilisé' });

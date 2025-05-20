@@ -5,10 +5,8 @@
         <input type="text" v-model="username" placeholder="Nom d'utilisateur" required />
         <input type="email" v-model="email" placeholder="Email" required />
         <input type="password" v-model="password" placeholder="Mot de passe" required />
-  
-        <!-- Nouveau champ : choisir role -->
         <select v-model="role" required>
-          <option value="user">Utilisateur</option>
+          <option value="utilisateur">Utilisateur</option>
           <option value="admin">Admin</option>
         </select>
   
@@ -27,17 +25,17 @@
         username: '',
         email: '',
         password: '',
-        role: 'user' // valeur par défaut
+        role: 'utilisateur'
       };
     },
     methods: {
       async register() {
         try {
-          const response = await axios.post('http://localhost:5050/api/register', {
-            username: this.username,
-            email: this.email,
-            password: this.password,
-            role: this.role
+          const response = await axios.post('http://localhost:5050/auth/register', {
+            Nom: this.username,
+            Email: this.email,
+            Mot_de_passe: this.password,
+            Role: this.role
           });
           alert(response.data.message);
           this.$router.push('/login');

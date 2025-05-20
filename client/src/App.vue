@@ -5,9 +5,10 @@
       <div class="nav-links">
         <router-link to="/">Accueil</router-link>
         <router-link to="/works">Catalogue</router-link>
-        <router-link to="/login">Connexion</router-link>
-        <router-link to="/register">Inscription</router-link>
-        
+        <router-link v-if="!isAuthenticated" to="/login">Connexion</router-link>
+        <router-link v-if="!isAuthenticated" to="/register">Inscription</router-link>
+        <router-link v-if="isAdmin" to="/admin">Espace Admin</router-link>
+        <a v-if="isAuthenticated" href="#" @click.prevent="logout">Déconnexion</a>
       </div>
     </nav>
     
@@ -28,6 +29,27 @@ export default {
     if (userData) {
       this.user = JSON.parse(userData);
       console.log(this.user); // pour vérifier ce qui est stocké
+    }
+  },
+  computed: {
+    isAuthenticated() {
+      return !!localStorage.getItem('token');
+    },
+    isAdmin() {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.role === 'admin';
+      } catch {
+        return false;
+      }
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.push('/');
     }
   }
 }

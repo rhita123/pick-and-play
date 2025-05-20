@@ -30,24 +30,19 @@
     methods: {
       async login() {
         try {
-          const response = await axios.post('http://localhost:5050/api/login', {
-            email: this.email,
-            password: this.password,
+          const response = await axios.post('http://localhost:5050/auth/login', {
+            Email: this.email,
+            Mot_de_passe: this.password,
           });
-  
-          // Enregistrement des données de l'utilisateur dans localStorage
-          localStorage.setItem('user', JSON.stringify({
-            id: response.data.user.id,
-            username: response.data.user.username,
-            email: response.data.user.email,
-            role: response.data.user.role  // Stockage du rôle ici
-          }));
-  
-          // Redirection en fonction du rôle
-          if (response.data.user.role === 'admin') {
-            this.$router.push({ name: 'Admin' });  // Redirection vers la page Admin
+
+          const token = response.data.token;
+          localStorage.setItem('token', token);
+
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          if (payload.role === 'admin') {
+            this.$router.push({ name: 'Admin' });
           } else {
-            this.$router.push({ name: 'Home' });  // Redirection vers la page d'accueil pour l'utilisateur
+            this.$router.push({ name: 'Home' });
           }
         } catch (error) {
           console.error('Erreur lors de la connexion:', error);
