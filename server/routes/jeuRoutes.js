@@ -9,5 +9,6 @@ router.get('/:id', jeuController.getGameById);
 router.post('/secure-test', verifyToken, (req, res) => {
   res.json({ message: `Bienvenue ${req.user.email}, tu es authentifié.` });
 });
+router.patch('/:id/louer', verifyToken, jeuController.louerJeu);
 
 module.exports = router;
