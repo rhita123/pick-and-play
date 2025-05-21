@@ -1,5 +1,3 @@
-
-
 const db = require('../config/db');
 
 exports.createCommentaire = (req, res) => {
@@ -36,5 +34,38 @@ exports.getCommentairesByJeu = (req, res) => {
       return res.status(500).json({ error: "Erreur serveur" });
     }
     res.json(results);
+  });
+};
+
+
+
+exports.updateCommentaire = (req, res) => {
+  const id_commentaire = req.params.id;
+  const id_utilisateur = req.user.id;
+  const { texte } = req.body;
+
+  const sql = 'UPDATE Commentaire SET Texte = ? WHERE ID_Commentaire = ?';
+  db.query(sql, [texte, id_commentaire], (err, result) => {
+    if (err) {
+      console.error("Erreur modification commentaire :", err);
+      return res.status(500).json({ error: "Erreur serveur" });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(403).json({ error: "Non autorisé à modifier ce commentaire" });
+    }
+    res.status(200).json({ message: "Commentaire modifié avec succès" });
+  });
+};
+
+exports.deleteCommentaire = (req, res) => {
+  const id = req.params.id;
+
+  const sql = "DELETE FROM Commentaire WHERE ID_Commentaire = ?";
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Erreur suppression commentaire :", err);
+      return res.status(500).json({ error: "Erreur serveur" });
+    }
+    res.status(200).json({ message: "Commentaire supprimé" });
   });
 };

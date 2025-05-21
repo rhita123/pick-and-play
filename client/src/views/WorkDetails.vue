@@ -36,6 +36,10 @@
         <li v-for="(comment, index) in commentaires" :key="index">
           <strong>{{ comment.utilisateur }}</strong> ({{ new Date(comment.Date).toLocaleString() }}) :
           <p>{{ comment.Texte }}</p>
+          <div>
+            <button @click="editComment(index)">Modifier</button>
+            <button @click="deleteComment(comment.ID_Commentaire)">Supprimer</button>
+          </div>
         </li>
       </ul>
     </div>
@@ -106,6 +110,40 @@ export default {
         alert("Une erreur est survenue.");
       }
     },
+    isCurrentUser(idUtilisateur) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      return user && user.id === idUtilisateur;
+    },
+
+    editComment(index) {
+      const comment = this.commentaires[index];
+      const nouveauTexte = prompt('Modifier le commentaire :', comment.Texte);
+      if (nouveauTexte && nouveauTexte !== comment.Texte) {
+        const token = localStorage.getItem('token');
+        axios.put(`http://localhost:5050/commentaire/${comment.ID_Commentaire}`, { commentaire: nouveauTexte }, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+          .then(() => this.fetchCommentaires())
+          .catch(err => {
+            console.error('Erreur modification commentaire', err);
+            alert('Erreur modification.');
+          });
+      }
+    },
+
+    deleteComment(idCommentaire) {
+      if (confirm('Confirmer la suppression ?')) {
+        const token = localStorage.getItem('token');
+        axios.delete(`http://localhost:5050/commentaire/${idCommentaire}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+          .then(() => this.fetchCommentaires())
+          .catch(err => {
+            console.error('Erreur suppression commentaire', err);
+            alert('Erreur suppression.');
+          });
+      }
+    },
   },
   mounted() {
     this.fetchWork();
@@ -168,7 +206,6 @@ strong {
 .back-button:hover {
   background-color: #455a64;
 }
-</style>
 
 .comment-list {
   margin-top: 20px;
@@ -288,3 +325,19 @@ strong {
 .comment-form button:hover {
   background-color: #0288d1;
 }
+
+.comment-list button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  background-color: #ef5350;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.comment-list button:hover {
+  background-color: #c62828;
+}
+</style>

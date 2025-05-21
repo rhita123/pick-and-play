@@ -9,4 +9,10 @@ router.post('/:id/commentaire', verifyToken, commentaireController.createComment
 // Récupérer les commentaires d’un jeu
 router.get('/:id/commentaires', commentaireController.getCommentairesByJeu);
 
+// Supprimer un commentaire
+router.delete('/commentaire/:id', commentaireController.deleteCommentaire);
+
+// Modifier un commentaire
+router.put('/commentaire/:id',  commentaireController.updateCommentaire);
+
 module.exports = router;
