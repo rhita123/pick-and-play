@@ -1,13 +1,10 @@
-
-
 <template>
   <div class="wishlist">
     <h1>Ma Wishlist</h1>
-    <pre>{{ games }}</pre>
-    <div v-if="games.length === 0">
+    <div v-if="games && games.length === 0">
       <p>Aucun jeu dans votre wishlist.</p>
     </div>
-    <div v-else class="game-list">
+    <div v-else-if="games && games.length > 0" class="game-list">
       <div v-for="game in games" :key="game.ID_Jeu" class="game-card">
         <img :src="game.Image" :alt="game.Nom" />
         <h3>{{ game.Nom }}</h3>
@@ -33,9 +30,11 @@ export default {
     async fetchWishlist() {
       try {
         const token = localStorage.getItem('token');
+        console.log(token);
         const res = await axios.get('http://localhost:5050/wishlist', {
           headers: { Authorization: `Bearer ${token}` }
         });
+        console.log('Wishlist response:', res.data);
         this.games = res.data;
       } catch (err) {
         console.error('Erreur récupération wishlist :', err);
