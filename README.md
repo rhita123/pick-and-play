@@ -2,6 +2,12 @@
 
 **Pick & Play** est une application web de gestion de jeux de société, développée en fullstack avec Vue.js, Node.js et MySQL. Elle permet aux utilisateurs de consulter des jeux, les noter, commenter, louer et gérer leur wishlist. Les administrateurs peuvent quant à eux gérer le catalogue complet (ajouter, modifier, supprimer des jeux).
 
+Projet réalisé dans le cadre du module **Base de Données Avancées** à l’Efrei.
+
+Membres du groupe **I-11** :
+- Rhita Moummade  
+- Anaïs Robert  
+- Begum Sozer
 ---
 
 ## Fonctionnalités principales
@@ -43,7 +49,7 @@
 
 ##  Base de données MySQL
 
-### 📌 Tables principales :
+###  Tables principales :
 - `Utilisateur`, `Jeu`, `Notation`, `Commentaire`, `Wishlist`, `Location`
 
 ###  Fonctions avancées utilisées :
