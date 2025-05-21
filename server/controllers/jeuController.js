@@ -48,11 +48,11 @@ exports.getGameById = (req, res) => {
 exports.louerJeu = (req, res) => {
   const jeuId = req.params.id;
 
-  const sql = 'UPDATE Jeu SET Est_Loue = true WHERE ID_Jeu = ?';
+  const sql = 'UPDATE Jeu SET Nb_Locations = Nb_Locations + 1 WHERE ID_Jeu = ?';
 
   db.query(sql, [jeuId], (err, result) => {
     if (err) {
-      console.error('Erreur lors de la location :', err);
+      console.error('Erreur lors de la mise à jour du nombre de locations :', err);
       return res.status(500).json({ error: 'Erreur serveur' });
     }
 
@@ -60,7 +60,7 @@ exports.louerJeu = (req, res) => {
       return res.status(404).json({ error: 'Jeu non trouvé' });
     }
 
-    res.status(200).json({ message: 'Jeu loué avec succès' });
+    res.status(200).json({ message: 'Location enregistrée avec succès' });
   });
 };
 

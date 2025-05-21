@@ -33,7 +33,7 @@
           <th>Max joueurs</th>
           <th>Durée</th>
           <th>Âge</th>
-          <th>Loué</th>
+          <th>Nb de locations</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -46,7 +46,7 @@
           <td>{{ jeu.Max_Joueurs }}</td>
           <td>{{ jeu.Duree }}</td>
           <td>{{ jeu.Age }}</td>
-          <td>{{ jeu.Est_Loue }}</td>
+          <td>{{ jeu.Nb_Locations }}</td>
           <td>
             <button @click="deleteGame(jeu.ID_Jeu)">Supprimer</button>
             <button @click="editGame(jeu)">Modifier</button>

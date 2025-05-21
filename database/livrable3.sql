@@ -349,3 +349,5 @@ ADD Role ENUM('utilisateur', 'admin') DEFAULT 'utilisateur';
 UPDATE Utilisateur
 SET Role = 'admin'
 WHERE Email = 'rhita@example.com';
+
+ALTER TABLE Jeu ADD COLUMN Nb_Locations INT DEFAULT 0;
