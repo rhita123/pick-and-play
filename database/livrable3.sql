@@ -351,3 +351,10 @@ SET Role = 'admin'
 WHERE Email = 'rhita@example.com';
 
 ALTER TABLE Jeu ADD COLUMN Nb_Locations INT DEFAULT 0;
+
+UPDATE Jeu SET Image = '/images/pandemic.webp' WHERE Nom = 'Pandemic';
+UPDATE Jeu SET Image = '/images/codenamesduo.webp' WHERE Nom = 'Codenames Duo';
+UPDATE Jeu SET Image = '/images/codenames.jpeg' WHERE Nom = 'Codenames';
+UPDATE Jeu SET Image = '/images/dixit.webp' WHERE Nom = 'Dixit';
+UPDATE Jeu SET Image = '/images/terraformingmars.jpeg' WHERE Nom = 'Terraforming Mars';
+UPDATE Jeu SET Image = '/images/tickettorideeurope.jpeg' WHERE Nom = 'Ticket to Ride: Europe';
