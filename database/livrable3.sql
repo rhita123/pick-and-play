@@ -369,3 +369,5 @@ CREATE TABLE Commentaire (
   FOREIGN KEY (ID_Utilisateur) REFERENCES Utilisateur(ID_Utilisateur) ON DELETE CASCADE,
   FOREIGN KEY (ID_Jeu) REFERENCES Jeu(ID_Jeu) ON DELETE CASCADE
 );
+
+CREATE INDEX idx_id_utilisateur ON Wishlist(ID_Utilisateur);
