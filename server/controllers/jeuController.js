@@ -118,3 +118,13 @@ exports.noterJeu = (req, res) => {
     });
   });
 };
+exports.getAvisUtilisateurs = (req, res) => {
+  const sql = 'SELECT * FROM V_Notes_Utilisateurs';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des avis utilisateurs :', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+    res.status(200).json(results);
+  });
+};
