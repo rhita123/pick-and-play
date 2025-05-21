@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const db = require('./config/db');
+const commentaireRoutes = require('./routes/commentaireRoutes');
 
 // ⬇️ On importe les routes
 
@@ -15,6 +16,7 @@ const authRoutes = require('./routes/authRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const notationRoutes = require('./routes/notationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+
 
 
 const app = express();
@@ -36,6 +38,7 @@ app.use('/auth', authRoutes);
 app.use('/wishlist', wishlistRoutes);
 app.use('/jeux', notationRoutes);
 app.use('/admin', adminRoutes);
+app.use('/jeux', commentaireRoutes);
 
 
 // Démarrage serveur

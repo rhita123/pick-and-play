@@ -21,6 +21,25 @@
       </form>
     </div>
 
+    <div class="comment-form">
+      <h3>Laisser un commentaire</h3>
+      <form @submit.prevent="submitComment">
+        <label for="comment">Votre commentaire :</label>
+        <textarea id="comment" v-model="newComment" required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+
+    <div class="comment-list" v-if="commentaires.length">
+      <h3>Commentaires</h3>
+      <ul>
+        <li v-for="(comment, index) in commentaires" :key="index">
+          <strong>{{ comment.utilisateur }}</strong> ({{ new Date(comment.Date).toLocaleString() }}) :
+          <p>{{ comment.Texte }}</p>
+        </li>
+      </ul>
+    </div>
+
     <router-link to="/works" class="back-button">← Retour au catalogue</router-link>
   </div>
 </template>
@@ -34,6 +53,8 @@ export default {
     return {
       work: {},
       newNote: null,
+      newComment: '',
+      commentaires: [],
     };
   },
   methods: {
@@ -43,6 +64,14 @@ export default {
         this.work = response.data;
       } catch (error) {
         console.error('Erreur chargement du jeu :', error);
+      }
+    },
+    async fetchCommentaires() {
+      try {
+        const response = await axios.get(`http://localhost:5050/jeux/${this.$route.params.id}/commentaires`);
+        this.commentaires = response.data;
+      } catch (error) {
+        console.error("Erreur lors du chargement des commentaires :", error);
       }
     },
     async submitNote() {
@@ -61,9 +90,26 @@ export default {
         alert("Une erreur est survenue.");
       }
     },
+    async submitComment() {
+      try {
+        const token = localStorage.getItem('token');
+        await axios.post(
+          `http://localhost:5050/jeux/${this.$route.params.id}/commentaire`,
+          { commentaire: this.newComment },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        alert('Commentaire envoyé !');
+        this.newComment = '';
+        this.fetchCommentaires(); // recharge après envoi
+      } catch (error) {
+        console.error("Erreur lors de l'envoi du commentaire :", error);
+        alert("Une erreur est survenue.");
+      }
+    },
   },
   mounted() {
     this.fetchWork();
+    this.fetchCommentaires();
   }
 };
 </script>
@@ -124,6 +170,36 @@ strong {
 }
 </style>
 
+.comment-list {
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #f9fbe7;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.comment-list h3 {
+  color: #fbc02d;
+  margin-bottom: 10px;
+}
+
+.comment-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment-list li {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.comment-list strong {
+  color: #1565c0;
+}
+
 .note-form {
   margin-top: 30px;
   background-color: #f0f4f8;
@@ -165,5 +241,50 @@ strong {
 }
 
 .note-form button:hover {
+  background-color: #0288d1;
+}
+
+.comment-form {
+  margin-top: 30px;
+  background-color: #f0f4f8;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.comment-form h3 {
+  color: #fbc02d;
+  margin-bottom: 10px;
+}
+
+.comment-form label {
+  color: #1565c0;
+  font-weight: bold;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #90a4ae;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.comment-form button {
+  background-color: #4fc3f7;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.comment-form button:hover {
   background-color: #0288d1;
 }

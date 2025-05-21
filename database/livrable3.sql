@@ -358,3 +358,14 @@ UPDATE Jeu SET Image = '/images/codenames.jpeg' WHERE Nom = 'Codenames';
 UPDATE Jeu SET Image = '/images/dixit.webp' WHERE Nom = 'Dixit';
 UPDATE Jeu SET Image = '/images/terraformingmars.jpeg' WHERE Nom = 'Terraforming Mars';
 UPDATE Jeu SET Image = '/images/tickettorideeurope.jpeg' WHERE Nom = 'Ticket to Ride: Europe';
+
+
+CREATE TABLE Commentaire (
+  ID_Commentaire INT AUTO_INCREMENT PRIMARY KEY,
+  ID_Utilisateur INT,
+  ID_Jeu INT,
+  Texte TEXT NOT NULL,
+  Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ID_Utilisateur) REFERENCES Utilisateur(ID_Utilisateur) ON DELETE CASCADE,
+  FOREIGN KEY (ID_Jeu) REFERENCES Jeu(ID_Jeu) ON DELETE CASCADE
+);
