@@ -1,68 +1,89 @@
-# Pick&Play – Catalogue interactif de jeux de société
+# Pick & Play
 
-Pick&Play est une application web permettant aux utilisateurs de découvrir, noter, commenter et sauvegarder des jeux de société dans une wishlist personnelle. L’objectif est de faciliter la recherche de jeux adaptés à tous les profils de joueurs, tout en offrant une interface intuitive et accessible.
+**Pick & Play** est une application web de gestion de jeux de société, développée en fullstack avec Vue.js, Node.js et MySQL. Elle permet aux utilisateurs de consulter des jeux, les noter, commenter, louer et gérer leur wishlist. Les administrateurs peuvent quant à eux gérer le catalogue complet (ajouter, modifier, supprimer des jeux).
 
 ---
 
-##  Fonctionnalités
+## Fonctionnalités principales
 
-### Pour tous les utilisateurs :
--  Parcourir un catalogue de jeux
--  Filtrer par nombre de joueurs, âge minimum, catégories, etc.
--  Voir une fiche détaillée d’un jeu
--  Noter et commenter des jeux
--  Ajouter et retirer des jeux de leur wishlist
--  Consulter leur propre wishlist
+###  Authentification & rôles
+- Inscription avec rôle (admin ou utilisateur)
+- Connexion sécurisée (JWT + bcrypt)
+- Redirection selon le rôle (admin vs user)
 
-### Pour les administrateurs :
--  Ajouter un nouveau jeu
--  Modifier les informations d’un jeu
--  Supprimer un jeu du catalogue
--  Marquer un jeu comme "loué" ou "disponible"
+###  Catalogue de jeux
+- Liste des jeux disponibles avec image, note moyenne et détails
+- Filtres (par note, type, etc.)
+- Recherche par nom
+
+###  Détail d’un jeu
+- Affichage de toutes les informations :
+  - Nom, image, description, durée, nombre de joueurs, âge
+- Note sur 10 par les utilisateurs
+- Commentaires avec suppression/modification
+
+###  Wishlist
+- Ajouter ou retirer un jeu de la wishlist
+- Affichage personnalisé de la wishlist par utilisateur
+
+###  Espace admin
+- Ajouter un jeu avec formulaire complet
+- Modifier ou supprimer un jeu
+- Visualisation des locations
+
+###  Location
+- Bouton "Louer ce jeu"
+- Nombre de locations visibles dans le dashboard admin
+
+###  Commentaires & Notes
+- Système de notation (/10) mis à jour dynamiquement
+- Système de commentaires modifiables et supprimables
+
+---
+
+##  Base de données MySQL
+
+### 📌 Tables principales :
+- `Utilisateur`, `Jeu`, `Notation`, `Commentaire`, `Wishlist`, `Location`
+
+###  Fonctions avancées utilisées :
+- **Procédures stockées** (ex : `Ajouter_Jeu_Wishlist`)
+-  **Triggers** (ex : `tr_update_note_moyenne`)
+-  **Vues SQL** (ex : `V_Notes_Utilisateurs`)
+-  **Index** pour améliorer les performances (ex : `idx_id_utilisateur` sur `Wishlist`)
 
 ---
 
 ##  Stack technique
 
-### Frontend
-- HTML / CSS / JavaScript
-- Vue.js (Vite ou Vue CLI)
-
-### Backend
-- Node.js + Express 
-- Connexion MySQL avec drivers adaptés
-
-### Base de données
-- MySQL
-- Procédures stockées, triggers et vues SQL optimisées
-- Script complet dans `livrable3.sql`
+| Frontend      | Backend     | BDD        |
+|---------------|-------------|------------|
+| Vue.js        | Node.js     | MySQL      |
+| Vue Router    | Express.js  | Procedures |
+| Axios         | JWT Auth    | Triggers   |
+| Tailwind CSS  | Bcrypt      | Vues SQL   |
 
 ---
 
-##  Structure du projet
+## ⚙️ Installation locale
 
 ```bash
-pick-and-play/
-├── frontend/
-│   ├── public/
-│   └── src/
-│       ├── components/
-│       ├── views/
-│      
-├── backend/
-│   └── routes/
-│   └── models/
-│   └── controllers/
-│   
-├── livrables/
-│   ├── livrable1.pdf
-│   ├── livrable2.pdf
-│   ├── livrable3.pdf
-│   └── livrable3.sql
-├── README.md
+# Clone le repo
+git clone https://github.com/rhita123/pick-and-play.git
 
+# Installe les dépendances backend
+cd server
+npm install
 
+# Installe les dépendances frontend
+cd ../client
+npm install
 
+# Démarre le serveur (depuis /server)
+node server.js
+
+# Lance le frontend (depuis /client)
+npm run serve
 
 
 
