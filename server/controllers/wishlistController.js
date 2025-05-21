@@ -17,16 +17,10 @@ exports.removeFromWishlist = (req, res) => {
   const idJeu = req.params.id;
   const idUtilisateur = req.user.id;
 
-  const getWishlistIdQuery = 'SELECT ID_Wishlist FROM Wishlist WHERE ID_Utilisateur = ?';
-  db.query(getWishlistIdQuery, [idUtilisateur], (err, rows) => {
-    if (err || rows.length === 0) return res.status(500).json({ error: 'Wishlist introuvable' });
-
-    const idWishlist = rows[0].ID_Wishlist;
-    const sql = 'CALL Supprimer_Jeu_Wishlist(?, ?)';
-    db.query(sql, [idWishlist, idJeu], (err) => {
-      if (err) return res.status(500).json({ error: 'Erreur lors de la suppression de la wishlist' });
-      res.status(200).json({ message: 'Jeu supprimé de la wishlist' });
-    });
+  const sql = 'DELETE FROM Wishlist WHERE ID_Utilisateur = ? AND ID_Jeu = ?';
+  db.query(sql, [idUtilisateur, idJeu], (err, result) => {
+    if (err) return res.status(500).json({ error: 'Erreur lors de la suppression de la wishlist' });
+    res.status(200).json({ message: 'Jeu retiré de la wishlist' });
   });
 };
 
