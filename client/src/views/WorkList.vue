@@ -15,6 +15,27 @@
           <option value="7">Note ≥ 7</option>
           <option value="9">Note ≥ 9</option>
         </select>
+
+        <select v-model="selectedGenre">
+          <option value="">Tous les genres</option>
+          <option value="Stratégie">Stratégie</option>
+          <option value="Famille">Famille</option>
+          <option value="Ambiance">Ambiance</option>
+        </select>
+
+        <select v-model="selectedPlayers">
+          <option value="">Tous les joueurs</option>
+          <option value="2">2 joueurs</option>
+          <option value="3">3 joueurs</option>
+          <option value="4+">4 joueurs ou plus</option>
+        </select>
+
+        <select v-model="selectedDuration">
+          <option value="">Toutes les durées</option>
+          <option value="30">≤ 30 min</option>
+          <option value="60">≤ 1h</option>
+          <option value="90">> 1h</option>
+        </select>
       </div>
   
       <!-- Liste des œuvres filtrées -->
@@ -42,7 +63,10 @@
       return {
         searchQuery: '',
         minRating: 0,
-        works: []
+        works: [],
+        selectedGenre: '',
+        selectedPlayers: '',
+        selectedDuration: '',
       }
     },
     computed: {
@@ -50,7 +74,18 @@
         return this.works.filter(work => {
           const matchesTitle = work.Nom.toLowerCase().includes(this.searchQuery.toLowerCase());
           const matchesRating = work.Note_moyenne >= this.minRating;
-          return matchesTitle && matchesRating;
+          const matchesGenre = this.selectedGenre === '' || work.Genre === this.selectedGenre;
+
+          const matchesPlayers = this.selectedPlayers === '' ||
+            (this.selectedPlayers === '4+' && work.Max_Joueurs >= 4) ||
+            (this.selectedPlayers !== '4+' && work.Min_Joueurs <= this.selectedPlayers && work.Max_Joueurs >= this.selectedPlayers);
+
+          const matchesDuration = this.selectedDuration === '' ||
+            (this.selectedDuration === '30' && work.Duree <= 30) ||
+            (this.selectedDuration === '60' && work.Duree <= 60) ||
+            (this.selectedDuration === '90' && work.Duree > 60);
+
+          return matchesTitle && matchesRating && matchesGenre && matchesPlayers && matchesDuration;
         });
       }
     },
