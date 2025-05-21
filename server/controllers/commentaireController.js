@@ -41,17 +41,13 @@ exports.getCommentairesByJeu = (req, res) => {
 
 exports.updateCommentaire = (req, res) => {
   const id_commentaire = req.params.id;
-  const id_utilisateur = req.user.id;
   const { texte } = req.body;
 
-  const sql = 'UPDATE Commentaire SET Texte = ? WHERE ID_Commentaire = ?';
-  db.query(sql, [texte, id_commentaire], (err, result) => {
+  const updateSql = 'UPDATE Commentaire SET Texte = ? WHERE ID_Commentaire = ?';
+  db.query(updateSql, [texte, id_commentaire], (err, result) => {
     if (err) {
       console.error("Erreur modification commentaire :", err);
       return res.status(500).json({ error: "Erreur serveur" });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(403).json({ error: "Non autorisé à modifier ce commentaire" });
     }
     res.status(200).json({ message: "Commentaire modifié avec succès" });
   });

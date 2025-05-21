@@ -120,7 +120,7 @@ export default {
       const nouveauTexte = prompt('Modifier le commentaire :', comment.Texte);
       if (nouveauTexte && nouveauTexte !== comment.Texte) {
         const token = localStorage.getItem('token');
-        axios.put(`http://localhost:5050/commentaire/${comment.ID_Commentaire}`, { commentaire: nouveauTexte }, {
+        axios.put(`http://localhost:5050/commentaire/${comment.ID_Commentaire}`, { texte: nouveauTexte }, {
           headers: { Authorization: `Bearer ${token}` }
         })
           .then(() => this.fetchCommentaires())
