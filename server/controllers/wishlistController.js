@@ -5,7 +5,7 @@ exports.addToWishlist = (req, res) => {
   const idJeu = req.body.ID_Jeu;
   const idUtilisateur = req.user.id;
 
-  const insertSql = 'INSERT IGNORE INTO Wishlist (ID_Utilisateur, ID_Jeu) VALUES (?, ?)';
+  const insertSql = 'CALL Ajouter_Jeu_Wishlist(?, ?)';
   db.query(insertSql, [idUtilisateur, idJeu], (err) => {
     if (err) return res.status(500).json({ error: 'Erreur lors de l\'ajout à la wishlist' });
     res.status(200).json({ message: 'Jeu ajouté à la wishlist' });
