@@ -71,7 +71,7 @@ Membres du groupe **I-11** :
 
 ---
 
-## ⚙️ Installation locale
+##  Installation locale
 
 ```bash
 # Clone le repo
@@ -89,7 +89,7 @@ npm install
 node server.js
 
 # Lance le frontend (depuis /client)
-npm run serve
+npm run dev
 
 
 
